@@ -1,0 +1,9 @@
+{
+  "name": "career-ops-workshop-slides",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/deck.test.mjs",
+    "verify": "node --test tests/deck.test.mjs"
+  }
+}

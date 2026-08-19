@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="A beginner-friendly Career-Ops workshop for high-school seniors">
+<title>Career-Ops for Beginners</title>
+<style>
+:root{--bg:#07110f;--panel:#10211c;--ink:#effbf7;--muted:#9ab7ad;--mint:#54f2b1;--cyan:#67d9ff;--amber:#ffc857;--red:#ff7b7b;--line:#29483e;--win:#61a8ff;--mac:#c49aff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink)}body{background:radial-gradient(circle at 85% 8%,#123a2f 0,transparent 30%),radial-gradient(circle at 5% 95%,#102c43 0,transparent 34%),var(--bg)}
+.deck{height:100%;position:relative}.slide{position:absolute;inset:0;display:none;padding:5vh 6vw 8vh;overflow:auto}.slide.is-active{display:flex;flex-direction:column;justify-content:center;animation:enter .25s ease-out}@keyframes enter{from{opacity:.2;transform:translateY(12px)}to{opacity:1;transform:none}}
+.slide-no{position:absolute;top:28px;right:42px;color:#78958b;font:700 14px ui-monospace,monospace}.eyebrow{color:var(--mint);font:700 clamp(13px,1.1vw,18px) ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;margin:0 0 14px}.title{font-size:clamp(44px,6vw,92px);line-height:.98;letter-spacing:-.055em;max-width:1150px;margin:0}.title em,.accent{color:var(--mint);font-style:normal}.cyan{color:var(--cyan)}.amber{color:var(--amber)}.subtitle{font-size:clamp(21px,2.1vw,34px);line-height:1.35;color:var(--muted);max-width:1050px;margin:24px 0}.h2{font-size:clamp(38px,4.4vw,68px);letter-spacing:-.045em;line-height:1.03;margin:0 0 26px}.h3{font-size:clamp(23px,2.2vw,36px);margin:0 0 10px}
+.grid{display:grid;gap:20px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:linear-gradient(145deg,#142921e8,#0b1815e8);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 18px 48px #0004}.card p,.card li{font-size:clamp(17px,1.45vw,24px);line-height:1.4;color:#c9ddd5}.card p{margin:8px 0}.card ul{margin:10px 0;padding-left:24px}.card strong{color:var(--mint)}
+.number{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:13px;background:#173c31;color:var(--mint);font:800 21px ui-monospace,monospace;margin-bottom:15px}.pill{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:#cbe0d8;background:#0b1815;font:700 13px ui-monospace,monospace}.pill.ok{border-color:#2c735a;color:var(--mint)}.pill.warn{border-color:#7d6426;color:var(--amber)}
+.terminal{background:#050b0a;border:1px solid #29453d;border-radius:21px;overflow:hidden;box-shadow:0 28px 80px #0008;margin-top:20px}.terminal__bar{padding:10px 15px;background:#12201d;color:#89a79d;font:700 13px ui-monospace,monospace;display:flex;gap:7px}.dot{width:11px;height:11px;border-radius:50%;background:#ff6b6b}.dot:nth-child(2){background:#ffd166}.dot:nth-child(3){background:#5dde91}.terminal pre,.code{margin:0;padding:20px 23px;white-space:pre-wrap;overflow-wrap:anywhere;color:#dff9ee;font:500 clamp(15px,1.25vw,21px)/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}.prompt{color:#7ad7b4}.comment{color:#718b82}.output{color:var(--cyan)}
+.flow{display:flex;align-items:stretch;gap:12px}.flow__node{flex:1;border:1px solid var(--line);background:#10221d;border-radius:21px;padding:22px;text-align:center}.flow__node b{display:block;font-size:clamp(19px,1.8vw,29px);margin-bottom:8px}.flow__node span{color:var(--muted);font-size:clamp(15px,1.2vw,20px)}.arrow{display:grid;place-items:center;color:var(--mint);font-size:32px}
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:20px}.lane{border-radius:22px;padding:22px;border:1px solid var(--line);background:#0d1b18}.lane.win{border-top:5px solid var(--win)}.lane.mac{border-top:5px solid var(--mac)}.lane h3{margin:0 0 12px;font-size:27px}.lane p{font-size:20px;line-height:1.4;color:#c9ddd5}.lane code{display:block;background:#050b0a;padding:14px;border-radius:12px;font:500 18px ui-monospace,monospace}
+.screenshot{position:relative;min-height:260px;border:2px dashed #36594f;border-radius:22px;background:repeating-linear-gradient(135deg,#10201c,#10201c 14px,#0d1a17 14px,#0d1a17 28px);display:grid;place-items:center;overflow:hidden;margin:18px 0}.screenshot img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#07110f;opacity:0}.screenshot.is-ready img{opacity:1}.screenshot__fallback{text-align:center;padding:28px;max-width:660px}.screenshot__id{font:800 19px ui-monospace,monospace;color:var(--mint)}.screenshot__desc{font-size:19px;line-height:1.4;color:var(--muted);margin-top:7px}.screenshot.is-ready .screenshot__fallback{display:none}
+.shot-link{position:absolute;inset:0;display:block;z-index:2}.shot-link:focus-visible{outline:4px solid var(--cyan);outline-offset:-5px}.shot-gallery{display:grid;grid-template-columns:repeat(var(--shots,2),minmax(0,1fr));gap:12px;margin:14px 0}.shot-gallery .screenshot{min-height:190px;margin:0}.shot-gallery .screenshot:after{content:"Click to enlarge";position:absolute;z-index:3;right:8px;bottom:8px;padding:5px 8px;border-radius:999px;background:#07110fda;color:#cbe0d8;font:700 10px ui-monospace,monospace;pointer-events:none}.shot-gallery .screenshot:not(.is-ready):after{display:none}
+.shot-viewer{margin:12px 0}.shot-tabs{display:flex;gap:8px;margin-bottom:8px}.shot-tab{border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:#0b1815;color:var(--muted);font:800 12px ui-monospace,monospace;cursor:pointer}.shot-tab.is-active{border-color:var(--mint);background:#173c31;color:var(--mint)}.shot-stage{height:min(51vh,550px)}.shot-viewer.compact .shot-stage{height:min(39vh,420px)}.shot-panel{display:none!important;height:100%;min-height:0!important;margin:0!important}.shot-panel.is-active{display:grid!important}.shot-panel:after{content:"Click to enlarge";position:absolute;z-index:3;right:10px;bottom:10px;padding:6px 9px;border-radius:999px;background:#07110fda;color:#cbe0d8;font:800 11px ui-monospace,monospace;pointer-events:none}.single-shot-layout{display:grid;grid-template-columns:minmax(360px,.72fr) minmax(0,1.28fr);gap:20px;align-items:stretch}.single-shot-layout .shot-viewer{margin:0}.single-shot-layout .shot-stage{height:min(58vh,620px)}
+.follow-prompt{margin:10px 0 0;padding:10px 13px;border:1px solid #31594d;border-left:4px solid var(--mint);border-radius:10px;background:#050b0a;color:#dff9ee;white-space:pre-wrap;overflow-wrap:anywhere;font:600 clamp(11px,.86vw,14px)/1.32 ui-monospace,SFMono-Regular,Consolas,monospace}.follow-prompt:before{content:"PASTE THIS PROMPT INTO  ·  OpenCode  ·  Codex  ·  Claude Code";display:block;margin-bottom:7px;color:var(--cyan);font-size:10px;font-weight:900;letter-spacing:.08em}.prompt-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}.command-slide{justify-content:flex-start!important;padding-top:3vh;padding-bottom:8vh}.command-slide .h2{margin-bottom:15px}.command-slide .card{padding:18px}.command-slide .command-name{margin:4px 0 10px}.command-slide .card p,.command-slide .card li{font-size:clamp(14px,1.1vw,18px)}
+.command-card{display:grid;grid-template-columns:.85fr 1.15fr;gap:20px}.command-name{font:800 clamp(30px,3.8vw,58px) ui-monospace,monospace;color:var(--mint);margin:10px 0 18px}.io{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.io div{border:1px solid var(--line);border-radius:14px;padding:13px}.io span{display:block;color:var(--muted);font:700 11px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.12em}.io b{display:block;margin-top:5px;font-size:17px}
+.warning{border-left:5px solid var(--amber);background:#2a2413;padding:16px 19px;border-radius:0 14px 14px 0;color:#ffe8aa;font-size:18px;line-height:1.45}.warning.success{border-left-color:var(--mint);background:#10271f;color:#caffe9}.warning.danger{border-left-color:var(--red);background:#2a1717;color:#ffd1d1}
+.matrix{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#0b1714}.matrix th,.matrix td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--line);font-size:clamp(15px,1.15vw,20px)}.matrix th{background:#142720;color:var(--mint)}.matrix tr:last-child td{border-bottom:0}
+.notes{display:none}.notes-panel{position:fixed;z-index:30;right:18px;bottom:62px;width:min(520px,44vw);max-height:52vh;overflow:auto;padding:20px;background:#050b0af2;border:1px solid #4c7065;border-radius:18px;box-shadow:0 28px 80px #0008;font-size:17px;line-height:1.5;transform:translateY(130%);transition:.2s}.notes-panel.is-open{transform:none}.notes-panel:before{content:"SPEAKER NOTES";display:block;color:var(--mint);font:800 12px ui-monospace,monospace;letter-spacing:.12em;margin-bottom:9px}
+.controls{position:fixed;z-index:20;left:22px;right:22px;bottom:14px;display:flex;justify-content:space-between;color:#8ba69d;font:700 13px ui-monospace,monospace;pointer-events:none}.controls__help,.slide-counter{background:#07110fca;border:1px solid #203d34;border-radius:999px;padding:7px 12px}.progress{position:fixed;z-index:25;left:0;right:0;bottom:0;height:5px;background:#13241f}.progress__bar{height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--cyan))}
+.overview-open{overflow:auto}.overview-open .deck{height:auto;padding:18px}.overview-open .slide{display:flex;position:relative;inset:auto;width:calc(33.333% - 24px);height:31vh;min-height:230px;float:left;margin:12px;padding:26px;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:#0a1512}.overview-open .slide .title,.overview-open .slide .h2{font-size:24px}.overview-open .slide .subtitle,.overview-open .slide p,.overview-open .slide li{font-size:12px}.overview-open .controls,.overview-open .progress,.overview-open .notes-panel{display:none}
+.source-list{font-size:clamp(17px,1.3vw,21px);line-height:1.65}.source-list a{color:var(--cyan);text-decoration:none}.micro{font-size:14px;color:var(--muted)}code{font-family:ui-monospace,monospace}
+.video-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:20px 0 0;padding:18px 22px;border:1px solid #397c68;border-left:6px solid var(--mint);border-radius:16px;background:linear-gradient(90deg,#143429,#10241f);color:var(--ink);text-decoration:none;box-shadow:0 16px 40px #0004}.video-cta:hover,.video-cta:focus-visible{border-color:var(--cyan);background:#15392f;outline:none}.video-cta__label{font-size:clamp(19px,1.7vw,28px);font-weight:800}.video-cta__url{flex:none;color:var(--cyan);font:700 clamp(13px,1vw,17px) ui-monospace,monospace}.video-cta__arrow{color:var(--mint);font-size:28px}.slide[data-slide="32"] .subtitle{font-size:clamp(17px,1.45vw,23px);margin:16px 0 0}
+@media(max-height:800px) and (min-width:901px){.slide[data-slide="20"]{justify-content:flex-start;padding-top:3vh;padding-bottom:9vh}.slide[data-slide="20"] .h2{font-size:clamp(36px,4vw,55px);margin-bottom:18px}.slide[data-slide="20"] .card{padding:18px}.slide[data-slide="20"] .command-name{margin:4px 0 10px!important}.slide[data-slide="20"] .screenshot{min-height:120px!important;margin:14px 0}.slide[data-slide="20"] .warning{margin-top:8px!important;padding:11px 16px}}
+@media(max-width:900px){.slide{padding:48px 26px 78px}.two,.three,.four,.lanes,.command-card,.prompt-pair,.single-shot-layout{grid-template-columns:1fr}.shot-gallery{grid-template-columns:1fr}.shot-stage,.shot-viewer.compact .shot-stage,.single-shot-layout .shot-stage{height:44vh}.flow{flex-direction:column}.arrow{transform:rotate(90deg)}.overview-open .slide{width:calc(50% - 24px)}.controls__help{display:none}.notes-panel{width:calc(100vw - 36px)}}
+@media print{html,body{overflow:visible;background:#fff}.slide{display:flex!important;position:relative;page-break-after:always;width:13.333in;height:7.5in;padding:.55in;background:#07110f;-webkit-print-color-adjust:exact;print-color-adjust:exact}.controls,.progress,.notes-panel{display:none!important}}
+</style>
+</head>
+<body>
+<main class="deck" aria-live="polite">
+
+<section class="slide is-active" data-slide="1" aria-label="Career-Ops for Beginners title slide">
+<span class="slide-no">01</span><p class="eyebrow">60-minute workshop · For beginners</p>
+<h1 class="title">From one job link<br>to an <em>application plan</em></h1>
+<p class="subtitle">Career-Ops + OpenCode, explained slowly enough for anyone who has never used a terminal.</p>
+<div><span class="pill ok">No coding required</span> <span class="pill">Windows + macOS</span> <span class="pill warn">AI assists · You decide</span></div>
+<aside class="notes" data-minutes="1">Welcome the class and set expectations: this is not a programming lesson. We are learning a controlled AI workflow for understanding jobs, evaluating fit, and preparing application materials.</aside>
+</section>
+
+<section class="slide" data-slide="2" aria-label="Workshop learning outcomes">
+<span class="slide-no">02</span><p class="eyebrow">The destination</p><h2 class="h2">What will you be able to do in 60 minutes?</h2>
+<div class="grid three"><article class="card"><span class="number">1</span><h3 class="h3">Set it up</h3><p>Install Node.js, Git, OpenCode, and a Career-Ops workspace.</p></article><article class="card"><span class="number">2</span><h3 class="h3">Run it</h3><p>Process one job URL through the full <strong>auto-pipeline</strong>.</p></article><article class="card"><span class="number">3</span><h3 class="h3">Choose wisely</h3><p>Pick the right command for the task in front of you.</p></article></div>
+<aside class="notes" data-minutes="1">Show students the concrete outcomes. The goal is to run one workflow independently, not memorize every command.</aside>
+</section>
+
+<section class="slide" data-slide="3" aria-label="The problem with manual job applications">
+<span class="slide-no">03</span><p class="eyebrow">Why Career-Ops?</p><h2 class="h2">One job posting creates many small tasks</h2>
+<div class="flow"><div class="flow__node"><b>Read the JD</b><span>What does the role need?</span></div><div class="arrow">→</div><div class="flow__node"><b>Compare the CV</b><span>Where do I fit?</span></div><div class="arrow">→</div><div class="flow__node"><b>Write materials</b><span>CV, cover, form</span></div><div class="arrow">→</div><div class="flow__node"><b>Track progress</b><span>Did I apply?</span></div></div>
+<p class="subtitle">When every step lives somewhere else, it is easy to forget work, repeat it, or apply based on gut feeling.</p>
+<aside class="notes" data-minutes="1.5">Ask who has saved jobs in several tabs and forgotten them. Career-Ops keeps the workflow in one local workspace.</aside>
+</section>
+
+<section class="slide" data-slide="4" aria-label="How Career-Ops works">
+<span class="slide-no">04</span><p class="eyebrow">Mental model</p><h2 class="h2">Career-Ops is the workflow; your coding agent is the operator</h2>
+<div class="flow"><div class="flow__node"><b>Job URL / JD</b><span>The role you are viewing</span></div><div class="arrow">+</div><div class="flow__node"><b>CV + goals</b><span>The truth about you</span></div><div class="arrow">→</div><div class="flow__node"><b>Coding agent</b><span>OpenCode · Codex · Claude Code</span></div><div class="arrow">→</div><div class="flow__node"><b>Artifacts</b><span>Report · PDF · Tracker</span></div></div>
+<div class="warning success" style="margin-top:20px"><strong>Choose your tool:</strong> OpenCode is used for the live demo, but it is not required. The same Career-Ops prompts can be pasted into Codex or Claude Code.</div>
+<aside class="notes" data-minutes="1.5">Career-Ops is the recipe; OpenCode, Codex, or Claude Code can act as the operator. This workshop installs OpenCode only because it is the presenter's demo tool.</aside>
+</section>
+
+<section class="slide" data-slide="5" aria-label="Workshop map and safety principles">
+<span class="slide-no">05</span><p class="eyebrow">Before setup</p><h2 class="h2">Four rules that keep the workshop on track</h2>
+<div class="grid four"><article class="card"><span class="number">1</span><p><strong>Read before pressing Enter.</strong></p></article><article class="card"><span class="number">2</span><p><strong>Never show an API key.</strong></p></article><article class="card"><span class="number">3</span><p><strong>Never invent CV facts.</strong></p></article><article class="card"><span class="number">4</span><p><strong>Always review the output.</strong></p></article></div>
+<p class="subtitle">Introduction 5′ · Setup 20′ · Auto-pipeline 14′ · Command map 15′ · Wrap-up 6′</p>
+<aside class="notes" data-minutes="1.5">If students share their screens, ask them to stop sharing before entering an API key.</aside>
+</section>
+
+<section class="slide" data-slide="6" aria-label="Install Node.js and Git on Windows and macOS">
+<span class="slide-no">06</span><p class="eyebrow">Setup 1/8</p><h2 class="h2">Install the foundations: Node.js LTS + Git</h2>
+<div class="lanes"><div class="lane win"><h3>🪟 Windows</h3><p>1. Download the <strong>LTS</strong> version from nodejs.org.</p><p>2. Install Git from git-scm.com.</p><p>3. Keep the defaults, then open a new PowerShell window.</p></div><div class="lane mac"><h3>🍎 macOS</h3><p>1. Download the <strong>LTS</strong> version from nodejs.org.</p><p>2. Open Terminal and run:</p><code>xcode-select --install</code></div></div>
+<div class="warning" style="margin-top:18px">Career-Ops requires Node.js 18+ and recommends 22.5+. Use an LTS release.</div>
+<aside class="notes" data-minutes="2.5">Do not reinstall tools that already work. Node runs helper scripts; Git lets the installer retrieve the workspace.</aside>
+</section>
+
+<section class="slide" data-slide="7" aria-label="Verify Node npm and Git">
+<span class="slide-no">07</span><p class="eyebrow">Setup 2/8 · Checkpoint</p><h2 class="h2">Does your computer recognize the tools?</h2>
+<div class="terminal"><div class="terminal__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i> PowerShell / Terminal</div><pre><span class="prompt">$</span> node --version
+<span class="output">v22.x.x or newer</span>
+<span class="prompt">$</span> npm --version
+<span class="output">10.x.x or newer</span>
+<span class="prompt">$</span> git --version
+<span class="output">git version 2.x.x</span></pre></div>
+<div class="warning" style="margin-top:16px"><strong>“command not found”?</strong> Close the terminal and reopen it. If it still fails, check the installation and PATH.</div>
+<aside class="notes" data-minutes="2">Pause for everyone to check. Continue only when all three commands print a version.</aside>
+</section>
+
+<section class="slide" data-slide="8" aria-label="Terminal folders and the cd command">
+<span class="slide-no">08</span><p class="eyebrow">Setup 3/8</p><h2 class="h2">A terminal is a text-based way to talk to your computer</h2>
+<div class="grid two"><article class="card"><h3 class="h3">Folder</h3><p>A container for files. Career-Ops needs a dedicated folder.</p></article><article class="card"><h3 class="h3"><code>cd</code></h3><p>“Change directory” — enter a folder so commands run in the right place.</p></article></div>
+<div class="terminal"><div class="terminal__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i> The same commands work on both systems</div><pre><span class="prompt">$</span> mkdir career-workshop
+<span class="prompt">$</span> cd career-workshop</pre></div>
+<aside class="notes" data-minutes="1.5">The $ symbol is not part of the command. Have students create the folder and enter it.</aside>
+</section>
+
+<section class="slide" data-slide="9" aria-label="Install OpenCode with npm">
+<span class="slide-no">09</span><p class="eyebrow">Setup 4/8</p><h2 class="h2">Install OpenCode — the AI interface in your terminal</h2>
+<div class="terminal"><div class="terminal__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i> PowerShell / Terminal</div><pre><span class="prompt">$</span> npm install -g opencode-ai
+<span class="prompt">$</span> opencode --version</pre></div>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/SS-SETUP-01.png" target="_blank" rel="noopener" aria-label="Enlarge OpenCode version screenshot"><img data-shot="SS-SETUP-01" src="assets/screenshots/SS-SETUP-01.png" alt="PowerShell showing OpenCode version 1.18.18" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a><figcaption class="screenshot__fallback"><div class="screenshot__id">SS-SETUP-01</div><div class="screenshot__desc">OpenCode is installed and available from PowerShell.</div></figcaption></figure>
+<aside class="notes" data-minutes="2">If the opencode command is not recognized, open a new terminal.</aside>
+</section>
+
+<section class="slide" data-slide="10" aria-label="Initialize the Career-Ops workspace">
+<span class="slide-no">10</span><p class="eyebrow">Setup 5/8</p><h2 class="h2">Create a Career-Ops workspace with one command</h2>
+<div class="terminal"><div class="terminal__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i> Inside career-workshop</div><pre><span class="prompt">$</span> npx @santifer/career-ops init
+<span class="comment"># Creates ./career-ops and installs dependencies</span>
+<span class="prompt">$</span> cd career-ops</pre></div>
+<div class="grid three" style="margin-top:18px"><div class="card"><strong>cv.md</strong><p>Your source CV</p></div><div class="card"><strong>reports/</strong><p>Job evaluations</p></div><div class="card"><strong>output/</strong><p>Generated PDFs</p></div></div>
+<aside class="notes" data-minutes="2.5">npx runs the installer once. Explain the folder structure while downloads finish.</aside>
+</section>
+
+<section class="slide" data-slide="11" aria-label="Run doctor and fix Playwright">
+<span class="slide-no">11</span><p class="eyebrow">Setup 6/8 · Checkpoint</p><h2 class="h2">Let the computer check itself before the demo</h2>
+<div class="single-shot-layout"><div class="terminal"><div class="terminal__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i> career-ops/</div><pre><span class="prompt">$</span> npm run doctor
+<span class="output">✓ Node · ✓ Git · ✓ dependencies · ✓ browser</span>
+
+<span class="comment"># Only if doctor reports that Chromium is missing:</span>
+<span class="prompt">$</span> npx playwright install chromium</pre></div><div class="shot-viewer" data-shot-viewer><div class="shot-stage"><figure class="screenshot shot-panel is-active" data-shot-panel><a class="shot-link" href="assets/screenshots/SS-SETUP-02.png" target="_blank" rel="noopener" aria-label="Enlarge doctor results"><img data-shot="SS-SETUP-02" src="assets/screenshots/SS-SETUP-02.png" alt="Career-Ops doctor checks passing with one Playwright MCP warning" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure></div></div></div>
+<aside class="notes" data-minutes="2">Playwright is a hidden browser used to read dynamic pages and render PDFs.</aside>
+</section>
+
+<section class="slide" data-slide="12" aria-label="Open OpenCode and connect OpenRouter">
+<span class="slide-no">12</span><p class="eyebrow">Setup 7/8</p><h2 class="h2">Open OpenCode and connect an AI model</h2>
+<div class="single-shot-layout"><div><div class="terminal"><div class="terminal__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i> career-ops/</div><pre><span class="prompt">$</span> opencode
+
+<span class="comment"># Inside OpenCode:</span>
+/connect
+<span class="output">Choose OpenRouter → paste the API key</span>
+/models
+<span class="output">Choose a model labelled :free</span></pre></div><div class="warning danger" style="margin-top:14px">Stop screen sharing before pasting the API key.</div></div><div class="shot-viewer" data-shot-viewer><div class="shot-stage"><figure class="screenshot shot-panel is-active" data-shot-panel><a class="shot-link" href="assets/screenshots/SS-SETUP-03.png" target="_blank" rel="noopener" aria-label="Enlarge provider setup screenshot"><img data-shot="SS-SETUP-03" src="assets/screenshots/SS-SETUP-03.png" alt="OpenCode API key entry screen with the key redacted" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure></div></div></div>
+<aside class="notes" data-minutes="3">Career-Ops is free; model providers may charge. This workshop uses a free OpenRouter model.</aside>
+</section>
+
+<section class="slide" data-slide="13" aria-label="Onboard with the Andrew Pham demo profile">
+<span class="slide-no">13</span><p class="eyebrow">Setup 8/8</p><h2 class="h2">Give Career-Ops a safe profile to test</h2>
+<div class="grid two"><article class="card"><h3 class="h3">Andrew Pham · demo only</h3><ul><li>Computer Science student</li><li>ML systems and research engineering</li><li>Distributed GPU training</li><li>Computer vision and backend projects</li><li>Targeting ML/SWE internships</li></ul></article><div class="terminal"><div class="terminal__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i> Onboarding prompt</div><pre>Use handouts/andrew-pham-demo-profile.md<br>as the candidate CV for this workshop.<br>Create the Career-Ops profile from it.<br>Do not invent or remove any experience.</pre></div></div>
+<div class="warning danger" style="margin-top:18px"><strong>Fictional demo profile:</strong> use it to test the software only. Never submit it or claim Andrew's experience as your own.</div>
+<aside class="notes" data-minutes="3">The workshop uses Andrew so students can test without sharing personal data. Clearly state that the profile is fictional and must never be submitted as a real application.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="14" aria-label="Run auto-pipeline with the Cohere ML internship" data-command="auto-pipeline">
+<span class="slide-no">14</span><p class="eyebrow">Hands-on · Main command</p><h2 class="h2">Paste one job URL — run the entire chain</h2>
+<div class="terminal"><div class="terminal__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i> OpenCode · career-ops/</div><pre class="follow-prompt">Run the /career-ops auto-pipeline command with this job URL:
+https://jobs.ashbyhq.com/cohere/36d1f52f-8270-4652-adf5-5303a0ff341b</pre></div>
+<div class="io"><div><span>Input</span><b>Cohere Machine Learning Intern/Co-op</b></div><div><span>Expected output</span><b>Report + tailored PDF + tracker row</b></div></div>
+<div class="warning" style="margin-top:16px">If the link expires, paste the saved JD text and request the same command.</div>
+<aside class="notes" data-minutes="2.5">Everyone copies the prompt. The goal is to learn the workflow, not claim that every student qualifies for the role.</aside>
+</section>
+
+<section class="slide" data-slide="15" aria-label="Steps inside auto-pipeline">
+<span class="slide-no">15</span><p class="eyebrow">What is auto-pipeline doing?</p><h2 class="h2">One prompt, five checkpoints</h2>
+<div class="grid" style="grid-template-columns:repeat(5,1fr);gap:10px"><article class="card"><span class="number">1</span><p>Is the link live?</p></article><article class="card"><span class="number">2</span><p>What does the JD say?</p></article><article class="card"><span class="number">3</span><p>What matches or gaps?</p></article><article class="card"><span class="number">4</span><p>Score A–G</p></article><article class="card"><span class="number">5</span><p>Save artifacts</p></article></div>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/SS-AUTO-01.png" target="_blank" rel="noopener" aria-label="Enlarge auto-pipeline result"><img data-shot="SS-AUTO-01" src="assets/screenshots/SS-AUTO-01.png" alt="Completed Cohere auto-pipeline with score and saved artifact paths" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a><figcaption class="screenshot__fallback"><div class="screenshot__id">SS-AUTO-01</div><div class="screenshot__desc">The result summarizes fit, gaps, compensation, legitimacy, work authorization, and saved files.</div></figcaption></figure>
+<aside class="notes" data-minutes="5">While the command runs, explain the five checkpoints and any permission prompts.</aside>
+</section>
+
+<section class="slide" data-slide="16" aria-label="Outputs from auto-pipeline">
+<span class="slide-no">16</span><p class="eyebrow">Artifacts</p><h2 class="h2">AI replies in chat — the value lives in files</h2>
+<div class="grid three"><article class="card"><span class="pill ok">reports/</span><h3 class="h3">Evaluation</h3><p>Matches, gaps, score, strategy, and legitimacy.</p></article><article class="card"><span class="pill ok">output/</span><h3 class="h3">Tailored PDF</h3><p>A JD-aligned CV that must remain truthful.</p></article><article class="card"><span class="pill ok">data/</span><h3 class="h3">Tracker</h3><p>A status row for this job.</p></article></div>
+<div class="shot-viewer compact" data-shot-viewer><div class="shot-tabs" role="tablist"><button class="shot-tab is-active" data-shot-tab aria-selected="true" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),0)">Evaluation report</button><button class="shot-tab" data-shot-tab aria-selected="false" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),1)">Tailored CV PDF</button></div><div class="shot-stage"><figure class="screenshot shot-panel is-active" data-shot-panel><a class="shot-link" href="assets/screenshots/SS-AUTO-REPORT.png" target="_blank" rel="noopener" aria-label="Enlarge auto-pipeline report"><img data-shot="SS-AUTO-REPORT" src="assets/screenshots/SS-AUTO-REPORT.png" alt="Generated job report matching JD requirements to CV evidence" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure><figure class="screenshot shot-panel" data-shot-panel hidden><a class="shot-link" href="assets/screenshots/SS-CMD-PDF.png" target="_blank" rel="noopener" aria-label="Enlarge generated Cohere CV"><img src="assets/screenshots/SS-CMD-PDF.png" alt="Generated two-page Cohere CV"></a></figure></div></div>
+<aside class="notes" data-minutes="3.5">Open the real files. Chat can disappear; local artifacts are the durable record.</aside>
+</section>
+
+<section class="slide" data-slide="17" aria-label="How to read scores and verify results">
+<span class="slide-no">17</span><p class="eyebrow">Do not read only the number</p><h2 class="h2">A score is a signal for investigation, not pass or fail</h2>
+<div class="grid two"><article class="card"><h3 class="h3 accent">Read carefully</h3><ul><li>Which requirements does the CV prove?</li><li>Which gaps are hard blockers?</li><li>Is the job real and still open?</li><li>Did the AI cite its sources?</li></ul></article><article class="card"><h3 class="h3 amber">Never do this</h3><ul><li>Add skills you have never used</li><li>Change titles or achievements</li><li>Trust unsourced compensation</li><li>Submit an unread PDF</li></ul></article></div>
+<div class="warning success" style="margin-top:18px"><strong>Hands-on complete:</strong> the remaining commands are focused tools for specific needs.</div>
+<aside class="notes" data-minutes="3">Emphasize that degree requirements and work authorization are real hard blockers.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="18" aria-label="Tracker command" data-command="tracker">
+<span class="slide-no">18</span><p class="eyebrow">Track progress</p><div class="command-card"><article class="card"><span class="pill">READ-ONLY</span><div class="command-name">tracker</div><p>View jobs by status: Evaluated, Applied, Interview, Offer, Rejected, and more.</p><div class="io"><div><span>Reads</span><b>reports + tracker</b></div><div><span>Creates</span><b>Status summary</b></div></div><pre class="follow-prompt">Run the /career-ops tracker command.</pre></article><figure class="screenshot"><a class="shot-link" href="assets/screenshots/SS-CMD-TRACKER.png" target="_blank" rel="noopener" aria-label="Enlarge tracker output"><img data-shot="SS-CMD-TRACKER" src="assets/screenshots/SS-CMD-TRACKER.png" alt="Applications tracker with one evaluated Cohere role" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a><figcaption class="screenshot__fallback"><div class="screenshot__id">SS-CMD-TRACKER</div><div class="screenshot__desc">The tracker consolidates score, status, PDF, report, and next action.</div></figcaption></figure></div>
+<div class="warning">Tracker is read-only; changing a status must be an explicit action.</div>
+<aside class="notes" data-minutes="1.5">Use tracker as a 15-second daily check-in.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="19" aria-label="PDF command" data-command="pdf">
+<span class="slide-no">19</span><p class="eyebrow">Prepare the application</p><div class="single-shot-layout"><article class="card"><span class="pill ok">ATS-FRIENDLY</span><div class="command-name">pdf</div><p>Create a tailored CV PDF for an evaluated JD without rerunning the evaluation.</p><div class="io"><div><span>Reads</span><b>cv.md + JD/report</b></div><div><span>Creates</span><b>PDF in output</b></div></div><pre class="follow-prompt">Run the /career-ops pdf command for Cohere.</pre></article><div class="shot-viewer" data-shot-viewer><div class="shot-stage"><figure class="screenshot shot-panel is-active" data-shot-panel><a class="shot-link" href="assets/screenshots/SS-CMD-PDF.png" target="_blank" rel="noopener" aria-label="Enlarge generated CV PDF"><img data-shot="SS-CMD-PDF" src="assets/screenshots/SS-CMD-PDF.png" alt="First page of Andrew Pham's tailored Cohere CV" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure></div></div></div>
+<aside class="notes" data-minutes="1.5">ATS-friendly does not mean keyword stuffing. Open and inspect the PDF.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="20" aria-label="Cover and apply commands" data-command="cover">
+<span class="slide-no">20</span><p class="eyebrow">Write — but never send automatically</p><h2 class="h2"><span class="accent">cover</span> writes the letter · <span class="cyan">apply</span> answers the form</h2>
+<div class="grid two"><article class="card"><div class="command-name" style="font-size:34px">cover</div><p>Draft a grounded letter; you approve it before export.</p><pre class="follow-prompt">Run the /career-ops cover command for Cohere.</pre></article><article class="card" data-command="apply"><div class="command-name cyan" style="font-size:34px">apply</div><p>Draft standard fields and additional answers for your review.</p><pre class="follow-prompt">Run the /career-ops apply command for Cohere.</pre></article></div>
+<div class="shot-viewer compact" data-shot-viewer><div class="shot-tabs" role="tablist"><button class="shot-tab is-active" data-shot-tab aria-selected="true" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),0)">Cover letter</button><button class="shot-tab" data-shot-tab aria-selected="false" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),1)">Autofill</button><button class="shot-tab" data-shot-tab aria-selected="false" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),2)">Additional questions</button></div><div class="shot-stage"><figure class="screenshot shot-panel is-active" data-shot-panel><a class="shot-link" href="assets/screenshots/SS-CMD-COVER.png" target="_blank" rel="noopener"><img data-shot="SS-CMD-COVER" src="assets/screenshots/SS-CMD-COVER.png" alt="AI-generated Cohere cover letter awaiting approval" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure><figure class="screenshot shot-panel" data-shot-panel hidden><a class="shot-link" href="assets/screenshots/SS-CMD-APPLY-AUTOFILL.png" target="_blank" rel="noopener"><img data-shot="SS-CMD-APPLY-AUTOFILL" src="assets/screenshots/SS-CMD-APPLY-AUTOFILL.png" alt="Suggested answers for standard application fields" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure><figure class="screenshot shot-panel" data-shot-panel hidden><a class="shot-link" href="assets/screenshots/SS-CMD-APPLY-QUESTIONS.png" target="_blank" rel="noopener"><img data-shot="SS-CMD-APPLY-QUESTIONS" src="assets/screenshots/SS-CMD-APPLY-QUESTIONS.png" alt="Drafted answers for Cohere internship questions" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure></div></div>
+<div class="warning danger" style="margin-top:18px"><strong>No auto-apply:</strong> it never clicks Submit or makes commitments for you.</div>
+<aside class="notes" data-minutes="1.5">Stopping at a draft is the most important guardrail.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="21" aria-label="Oferta command with two internships" data-command="oferta">
+<span class="slide-no">21</span><p class="eyebrow">Quick evaluation</p><h2 class="h2"><span class="accent">oferta</span> evaluates one job before you invest more time</h2><div class="prompt-pair"><pre class="follow-prompt">Run the /career-ops oferta command with this job URL:
+https://jobs.ashbyhq.com/cohere/8c035d3d-081d-4c8a-914a-72f4efaad254</pre><pre class="follow-prompt">Run the /career-ops oferta command with this job URL:
+https://jobs.lever.co/waabi/0fd4e30b-9bd1-4b53-9043-6088457363cb</pre></div><div class="shot-viewer compact" data-shot-viewer><div class="shot-tabs" role="tablist"><button class="shot-tab is-active" data-shot-tab aria-selected="true" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),0)">Cohere SWE</button><button class="shot-tab" data-shot-tab aria-selected="false" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),1)">Waabi Research</button></div><div class="shot-stage"><figure class="screenshot shot-panel is-active" data-shot-panel><a class="shot-link" href="assets/screenshots/SS-CMD-OFERTA-COHERE.png" target="_blank" rel="noopener"><img data-shot="SS-CMD-OFERTA-COHERE" src="assets/screenshots/SS-CMD-OFERTA-COHERE.png" alt="Cohere Software Engineer Intern evaluation scored 3.7 out of 5" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure><figure class="screenshot shot-panel" data-shot-panel hidden><a class="shot-link" href="assets/screenshots/SS-CMD-OFERTA-WAABI.png" target="_blank" rel="noopener"><img data-shot="SS-CMD-OFERTA-WAABI" src="assets/screenshots/SS-CMD-OFERTA-WAABI.png" alt="Waabi Research Internship evaluation scored 4.6 out of 5" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure></div></div>
+<div class="warning">An exciting job can still be blocked by degree, location, or evidence requirements.</div>
+<aside class="notes" data-minutes="2">Fit depends on the profile; do not treat the instructor's score as a conclusion for students.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="22" aria-label="Ofertas command for comparing jobs" data-command="ofertas">
+<span class="slide-no">22</span><p class="eyebrow">Structured comparison</p><h2 class="h2"><span class="accent">ofertas</span> answers: “What if I have several options?”</h2>
+<div class="single-shot-layout"><article class="card"><p>Compare evaluated roles using weighted criteria, then rank where to spend your energy.</p><pre class="follow-prompt">Run the /career-ops ofertas command.</pre><div class="warning" style="margin-top:12px">Evaluate each job first so the comparison uses consistent depth.</div></article><div class="shot-viewer" data-shot-viewer><div class="shot-stage"><figure class="screenshot shot-panel is-active" data-shot-panel><a class="shot-link" href="assets/screenshots/SS-CMD-OFERTAS.png" target="_blank" rel="noopener" aria-label="Enlarge weighted job comparison"><img data-shot="SS-CMD-OFERTAS" src="assets/screenshots/SS-CMD-OFERTAS.png" alt="Weighted comparison ranking Cohere ML, Waabi Research, and Cohere SWE" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure></div></div></div>
+<aside class="notes" data-minutes="1.5">Separate a famous job from a job that supports the candidate's direction.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="23" aria-label="Deep company research command" data-command="deep">
+<span class="slide-no">23</span><p class="eyebrow">Research</p><div class="single-shot-layout"><article class="card"><div class="command-name">deep</div><p>Research AI strategy, recent moves, culture, challenges, competitors, and the candidate angle.</p><div class="io"><div><span>Use when</span><b>Before interviews</b></div><div><span>Creates</span><b>Research brief</b></div></div><pre class="follow-prompt">Run the /career-ops deep command for Cohere.</pre></article><div class="shot-viewer" data-shot-viewer><div class="shot-stage"><figure class="screenshot shot-panel is-active" data-shot-panel><a class="shot-link" href="assets/screenshots/SS-CMD-DEEP.png" target="_blank" rel="noopener" aria-label="Enlarge deep research result"><img data-shot="SS-CMD-DEEP" src="assets/screenshots/SS-CMD-DEEP.png" alt="Cohere deep research covering strategy, recent moves, and culture" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure></div></div></div>
+<aside class="notes" data-minutes="1.5">Verify funding, leadership, and news against primary sources.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="24" aria-label="Interview prep for recruiter and technical ML rounds" data-command="interview-prep">
+<span class="slide-no">24</span><p class="eyebrow">Prepare for the person in the room</p><h2 class="h2">One company, two rounds, two preparation styles</h2>
+<div class="prompt-pair"><pre class="follow-prompt">Run the /career-ops interview-prep command for Cohere for a recruiter interview.</pre><pre class="follow-prompt">Run the /career-ops interview-prep command for Cohere for a technical ML interview.</pre></div><div class="shot-viewer compact" data-shot-viewer><div class="shot-tabs" role="tablist"><button class="shot-tab is-active" data-shot-tab aria-selected="true" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),0)">Recruiter round</button><button class="shot-tab" data-shot-tab aria-selected="false" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),1)">Technical ML round</button></div><div class="shot-stage"><figure class="screenshot shot-panel is-active" data-shot-panel><a class="shot-link" href="assets/screenshots/SS-CMD-INTERVIEW-RECRUITER.png" target="_blank" rel="noopener"><img data-shot="SS-CMD-INTERVIEW-RECRUITER" src="assets/screenshots/SS-CMD-INTERVIEW-RECRUITER.png" alt="Recruiter-screen preparation with background and why Cohere answers" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure><figure class="screenshot shot-panel" data-shot-panel hidden><a class="shot-link" href="assets/screenshots/SS-CMD-INTERVIEW-TECHNICAL.png" target="_blank" rel="noopener"><img data-shot="SS-CMD-INTERVIEW-TECHNICAL" src="assets/screenshots/SS-CMD-INTERVIEW-TECHNICAL.png" alt="Technical ML preparation covering Transformers and distributed training" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure></div></div>
+<aside class="notes" data-minutes="2">Sourced questions need citations; inferred questions need clear labels.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="25" aria-label="Scan and pipeline commands" data-command="scan">
+<span class="slide-no">25</span><p class="eyebrow">Find many jobs</p><h2 class="h2"><span class="accent">scan</span> discovers and queues → <span class="cyan">pipeline</span> processes</h2>
+<div class="prompt-pair"><pre class="follow-prompt">Run the /career-ops scan command.</pre><pre class="follow-prompt" data-command="pipeline">Run the /career-ops pipeline command.</pre></div><div class="shot-viewer compact" data-shot-viewer><div class="shot-tabs" role="tablist"><button class="shot-tab is-active" data-shot-tab aria-selected="true" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),0)">Scan result</button><button class="shot-tab" data-shot-tab aria-selected="false" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),1)">Pipeline result</button></div><div class="shot-stage"><figure class="screenshot shot-panel is-active" data-shot-panel><a class="shot-link" href="assets/screenshots/SS-CMD-SCAN.png" target="_blank" rel="noopener"><img data-shot="SS-CMD-SCAN" src="assets/screenshots/SS-CMD-SCAN.png" alt="Scan result showing 2615 jobs found and 61 queued" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure><figure class="screenshot shot-panel" data-shot-panel hidden><a class="shot-link" href="assets/screenshots/SS-CMD-PIPELINE.png" target="_blank" rel="noopener"><img data-shot="SS-CMD-PIPELINE" src="assets/screenshots/SS-CMD-PIPELINE.png" alt="Pipeline pre-screening 61 queued jobs and evaluating three survivors" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure></div></div><div class="warning"><strong>Order matters:</strong> run <code>scan</code> first, then run <code>pipeline</code>.</div>
+<aside class="notes" data-minutes="2">Pipeline runs after scan; batch processing may take time and tokens.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="26" aria-label="Project and training commands" data-command="project">
+<span class="slide-no">26</span><p class="eyebrow">Grow strategically</p><h2 class="h2"><span class="accent">project</span> chooses what to build · <span class="cyan">training</span> chooses what to learn</h2>
+<pre class="follow-prompt">Run the /career-ops project command for this project idea:
+
+Build a distributed LLM training platform that can launch multi-GPU training jobs, track experiments, checkpoint models, recover failed jobs, and compare training throughput across DDP and FSDP.</pre><div class="prompt-pair"><pre class="follow-prompt" data-command="training">Run the /career-ops training command to evaluate whether learning distributed ML training is worth it for my target roles.</pre><pre class="follow-prompt">Run the /career-ops training command to compare learning Kubernetes versus distributed ML training for my target roles.</pre></div><div class="shot-viewer compact" data-shot-viewer><div class="shot-tabs" role="tablist"><button class="shot-tab is-active" data-shot-tab aria-selected="true" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),0)">Project</button><button class="shot-tab" data-shot-tab aria-selected="false" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),1)">Training</button><button class="shot-tab" data-shot-tab aria-selected="false" onclick="CareerOpsDeck.showShot(this.closest('[data-shot-viewer]'),2)">Comparison</button></div><div class="shot-stage"><figure class="screenshot shot-panel is-active" data-shot-panel><a class="shot-link" href="assets/screenshots/SS-CMD-PROJECT.png" target="_blank" rel="noopener"><img data-shot="SS-CMD-PROJECT" src="assets/screenshots/SS-CMD-PROJECT.png" alt="Distributed LLM training platform project evaluation" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure><figure class="screenshot shot-panel" data-shot-panel hidden><a class="shot-link" href="assets/screenshots/SS-CMD-TRAINING.png" target="_blank" rel="noopener"><img data-shot="SS-CMD-TRAINING" src="assets/screenshots/SS-CMD-TRAINING.png" alt="Distributed ML training course evaluation with don't-do verdict" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure><figure class="screenshot shot-panel" data-shot-panel hidden><a class="shot-link" href="assets/screenshots/SS-CMD-TRAINING-COMPARISON.png" target="_blank" rel="noopener"><img data-shot="SS-CMD-TRAINING-COMPARISON" src="assets/screenshots/SS-CMD-TRAINING-COMPARISON.png" alt="Kubernetes versus distributed ML training comparison" onload="CareerOpsDeck.hydrateScreenshot(this)" onerror="CareerOpsDeck.hydrateScreenshot(this)"></a></figure></div></div>
+<aside class="notes" data-minutes="1.5">Do not learn something only because it is trending; choose work that creates evidence for a target direction.</aside>
+</section>
+
+<section class="slide" data-slide="27" aria-label="Verification and data protection rules">
+<span class="slide-no">27</span><p class="eyebrow">Guardrails</p><h2 class="h2">Three things AI must never guess with confidence</h2>
+<div class="grid three"><article class="card"><span class="number">1</span><h3 class="h3">Facts about you</h3><p>Skills, metrics, titles, achievements, and work authorization.</p></article><article class="card"><span class="number">2</span><h3 class="h3">Facts about a company</h3><p>Compensation, funding, leadership, and interview process.</p></article><article class="card"><span class="number">3</span><h3 class="h3">External actions</h3><p>Submitting, emailing, signing, or publishing data.</p></article></div>
+<div class="warning danger" style="margin-top:20px">An API key is a password. A CV contains personal data. Do not commit, screenshot, or post either one.</div>
+<aside class="notes" data-minutes="1">AI drafts; a human verifies and submits.</aside>
+</section>
+
+<section class="slide" data-slide="28" aria-label="Choose the right command">
+<span class="slide-no">28</span><p class="eyebrow">No memorization required</p><h2 class="h2">What are you trying to do?</h2>
+<table class="matrix"><thead><tr><th>Need</th><th>Start with</th><th>Then</th></tr></thead><tbody><tr><td>Process one new job end to end</td><td><code>auto-pipeline</code></td><td><code>tracker</code></td></tr><tr><td>Score one job quickly</td><td><code>oferta</code></td><td><code>ofertas</code></td></tr><tr><td>Prepare an application</td><td><code>pdf</code></td><td><code>cover → apply</code></td></tr><tr><td>Prepare for an interview</td><td><code>deep</code></td><td><code>interview-prep</code></td></tr><tr><td>Discover jobs in bulk</td><td><code>scan</code></td><td><code>pipeline</code></td></tr><tr><td>Choose what to learn or build</td><td><code>training</code></td><td><code>project</code></td></tr></tbody></table>
+<aside class="notes" data-minutes="1">This is the slide students should photograph. Start from the need, not the command name.</aside>
+</section>
+
+<section class="slide" data-slide="29" aria-label="Cheat sheet prompts part one">
+<span class="slide-no">29</span><p class="eyebrow">Cheat sheet 1/3 · Evaluate & prepare</p><h2 class="h2">Copy the prompt; replace the job carefully</h2>
+<div class="grid two"><pre class="code demo-prompt">Run the /career-ops auto-pipeline command with this job URL:
+https://jobs.ashbyhq.com/cohere/36d1f52f-8270-4652-adf5-5303a0ff341b</pre><pre class="code demo-prompt">Run the /career-ops tracker command.</pre><pre class="code demo-prompt">Run the /career-ops pdf command for Cohere.</pre><pre class="code demo-prompt">Run the /career-ops cover command for Cohere.</pre><pre class="code demo-prompt">Run the /career-ops apply command for Cohere.</pre></div>
+<aside class="notes" data-minutes="1">Show students where to find the prompts; do not read each one aloud.</aside>
+</section>
+
+<section class="slide" data-slide="30" aria-label="Cheat sheet prompts part two">
+<span class="slide-no">30</span><p class="eyebrow">Cheat sheet 2/3 · Compare & research</p><h2 class="h2">From quick evaluation to interview prep</h2>
+<div class="grid two"><pre class="code demo-prompt">Run the /career-ops oferta command with this job URL:
+https://jobs.ashbyhq.com/cohere/8c035d3d-081d-4c8a-914a-72f4efaad254</pre><pre class="code demo-prompt">Run the /career-ops oferta command with this job URL:
+https://jobs.lever.co/waabi/0fd4e30b-9bd1-4b53-9043-6088457363cb</pre><pre class="code demo-prompt">Run the /career-ops ofertas command.</pre><pre class="code demo-prompt">Run the /career-ops deep command for Cohere.</pre><pre class="code demo-prompt">Run the /career-ops interview-prep command for Cohere for a recruiter interview.</pre><pre class="code demo-prompt">Run the /career-ops interview-prep command for Cohere for a technical ML interview.</pre></div>
+<aside class="notes" data-minutes="1">Ofertas compares completed evaluations; interview prep should name the specific round.</aside>
+</section>
+
+<section class="slide" data-slide="31" aria-label="Cheat sheet prompts part three">
+<span class="slide-no">31</span><p class="eyebrow">Cheat sheet 3/3 · Discover & grow</p><h2 class="h2">Find jobs, process the queue, choose projects and training</h2>
+<div class="grid two"><pre class="code demo-prompt">Run the /career-ops scan command.</pre><pre class="code demo-prompt">Run the /career-ops pipeline command.</pre><pre class="code demo-prompt">Run the /career-ops project command for this project idea:
+
+Build a distributed LLM training platform that can launch multi-GPU training jobs, track experiments, checkpoint models, recover failed jobs, and compare training throughput across DDP and FSDP.</pre><pre class="code demo-prompt">Run the /career-ops training command to evaluate whether learning distributed ML training is worth it for my target roles.</pre><pre class="code demo-prompt">Run the /career-ops training command to compare learning Kubernetes versus distributed ML training for my target roles.</pre></div>
+<aside class="notes" data-minutes="1">Pipeline follows scan. The project prompt is intentionally detailed enough for evaluation.</aside>
+</section>
+
+<section class="slide" data-slide="32" aria-label="Summary sources and next steps">
+<span class="slide-no">32</span><p class="eyebrow">You now have a system, not just a prompt</p><h2 class="h2">Run it with <span class="accent">one real job</span>, then review like the person responsible</h2>
+<div class="grid two"><article class="card"><h3 class="h3">After the workshop</h3><ul><li>Replace the demo with your truthful profile</li><li>Save one backup JD as text</li><li>Run auto-pipeline</li><li>Read every report and PDF before use</li></ul></article><article class="card"><h3 class="h3">Official sources</h3><div class="source-list"><a href="https://career-ops.org/docs">career-ops.org/docs</a><br><a href="https://career-ops.org/docs/reference/modes/auto-pipeline">Career-Ops mode reference</a><br><a href="https://opencode.ai/docs/providers/">OpenCode provider docs</a><br><a href="https://career-ops.org/docs/free-ai-engine">Free AI engine guide</a></div><p class="micro">Links checked August 19, 2026.</p></article></div>
+<a class="video-cta" href="https://youtu.be/vQASKFsXKU0?si=d-p91u8i8uJrTeWt" target="_blank" rel="noopener" aria-label="Watch the full Career-Ops command demo on YouTube in a new tab"><span class="video-cta__label">Watch the full Career-Ops command demo</span><span class="video-cta__url">youtu.be/vQASKFsXKU0</span><span class="video-cta__arrow" aria-hidden="true">&#8599;</span></a>
+<p class="subtitle">AI accelerates repetitive work. You keep the decision and responsibility for the truth.</p>
+<aside class="notes" data-minutes="1">Point students to the complete YouTube walkthrough if they want to replay every command. Then choose one real job and run the workflow, but never submit before reviewing every artifact.</aside>
+</section>
+
+</main>
+<aside class="notes-panel" aria-label="Speaker notes" aria-hidden="true"></aside>
+<div class="controls"><div class="controls__help" data-controls-help>←/→ slides · O overview · N notes · F fullscreen</div><div class="slide-counter">1 / 32</div></div>
+<div class="progress" aria-hidden="true"><div class="progress__bar"></div></div>
+<script id="deck-runtime">
+(() => {
+ const slides=Array.from(document.querySelectorAll('.slide'));
+ const progress=document.querySelector('.progress__bar');
+ const counter=document.querySelector('.slide-counter');
+ const notesPanel=document.querySelector('.notes-panel');
+ if(notesPanel)notesPanel.hidden=true;
+ let index=0;
+ function clamp(v){return Math.max(0,Math.min(slides.length-1,Number(v)||0))}
+ function goTo(v){index=clamp(v);slides.forEach((s,i)=>{const a=i===index;s.classList.toggle('is-active',a);s.setAttribute('aria-hidden',String(!a))});if(progress)progress.style.width=(((index+1)/slides.length)*100)+'%';if(counter)counter.textContent=(index+1)+' / '+slides.length;const n=slides[index]&&slides[index].querySelector&&slides[index].querySelector('.notes');if(notesPanel)notesPanel.innerHTML=n?n.innerHTML:'No notes for this slide.';if(window.location)window.location.hash=String(index+1);return index}
+ function next(){return goTo(index+1)} function previous(){return goTo(index-1)}
+ function toggleNotes(){if(!notesPanel)return false;const open=notesPanel.classList.toggle('is-open');notesPanel.hidden=!open;notesPanel.setAttribute('aria-hidden',String(!open));return open}
+ function toggleOverview(){return document.body.classList.toggle('overview-open')}
+ async function toggleFullscreen(){if(!document.fullscreenElement)await document.documentElement.requestFullscreen?.();else await document.exitFullscreen?.()}
+ function hydrateScreenshot(image){const figure=image&&image.closest&&image.closest('.screenshot');if(!figure)return false;const loaded=Boolean(image.complete&&image.naturalWidth>0);figure.classList.toggle('is-ready',loaded);figure.classList.toggle('is-missing',!loaded);return loaded}
+ function showShot(viewer,target){if(!viewer)return false;const panels=Array.from(viewer.querySelectorAll('[data-shot-panel]'));const tabs=Array.from(viewer.querySelectorAll('[data-shot-tab]'));const next=Math.max(0,Math.min(panels.length-1,Number(target)||0));panels.forEach((panel,i)=>{const active=i===next;panel.hidden=!active;panel.classList.toggle('is-active',active)});tabs.forEach((tab,i)=>{const active=i===next;tab.classList.toggle('is-active',active);tab.setAttribute('aria-selected',String(active))});return next}
+ function handleKey(e){if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault?.();next()}if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault?.();previous()}if(e.key==='Home')goTo(0);if(e.key==='End')goTo(slides.length-1);if(e.key.toLowerCase()==='n')toggleNotes();if(e.key.toLowerCase()==='o')toggleOverview();if(e.key.toLowerCase()==='f')toggleFullscreen();if(e.key==='Escape'&&document.body.classList.contains('overview-open'))toggleOverview()}
+ window.CareerOpsDeck={goTo,next,previous,current:()=>index,toggleNotes,toggleOverview,toggleFullscreen,hydrateScreenshot,showShot};
+ document.addEventListener('keydown',handleKey);
+ window.addEventListener('hashchange',()=>goTo(Number(window.location.hash.slice(1))-1));
+ slides.forEach((s,i)=>s.addEventListener?.('click',()=>{if(document.body.classList.contains('overview-open')){toggleOverview();goTo(i)}}));
+ document.querySelectorAll('.screenshot img').forEach(hydrateScreenshot);
+ document.querySelectorAll('.follow-prompt').forEach(prompt=>prompt.setAttribute('aria-label','Prompt to paste into OpenCode, Codex, or Claude Code'));
+ goTo(window.location?.hash?Number(window.location.hash.slice(1))-1:0);
+})();
+</script>
+</body>
+</html>
