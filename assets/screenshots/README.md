@@ -1,12 +1,10 @@
 # Screenshot inventory
 
-The deck ships with the 21 demo screenshots below. Every screenshot is clickable in the deck and opens at full resolution in a new tab.
+The deck ships with the 19 demo screenshots below. Every screenshot is clickable in the deck and opens at full resolution in a new tab.
 
 | File | Slide content |
 |---|---|
-| `SS-SETUP-01.png` | `opencode --version` |
 | `SS-SETUP-02.png` | `npm run doctor` |
-| `SS-SETUP-03.png` | OpenCode provider/API-key setup, with the key redacted |
 | `SS-AUTO-01.png` | Completed Cohere auto-pipeline summary |
 | `SS-AUTO-REPORT.png` | Auto-pipeline job report |
 | `SS-CMD-PDF.png` | Tailored Cohere CV PDF |

@@ -75,16 +75,16 @@ function loadRuntime(html) {
   return { api: window.CareerOpsDeck, slides, progress, counter, notes, overview, body, prompts };
 }
 
-test('deck has exactly 32 ordered, labelled slides and 60 minutes of notes', () => {
+test('deck has exactly 33 ordered, labelled slides and 60 minutes of notes', () => {
   const html = readDeck();
   const sections = matches(html, /<section\b([^>]*)class="[^"]*\bslide\b[^"]*"([^>]*)>/g);
-  assert.equal(sections.length, 32);
+  assert.equal(sections.length, 33);
   const numbers = sections.map((match) => Number((match[0].match(/data-slide="(\d+)"/) ?? [])[1]));
-  assert.deepEqual(numbers, Array.from({ length: 32 }, (_, index) => index + 1));
+  assert.deepEqual(numbers, Array.from({ length: 33 }, (_, index) => index + 1));
   sections.forEach((match) => assert.match(match[0], /aria-label="[^"]+"/));
   const minutes = matches(html, /<aside\b[^>]*class="notes"[^>]*data-minutes="([\d.]+)"/g)
     .map((match) => Number(match[1]));
-  assert.equal(minutes.length, 32);
+  assert.equal(minutes.length, 33);
   assert.equal(minutes.reduce((total, value) => total + value, 0), 60);
 });
 
@@ -112,11 +112,10 @@ test('screenshot assets have unique IDs and deterministic local paths', () => {
   shots.forEach((match) => assert.equal(match[2], `${match[1]}.png`));
 });
 
-test('deck embeds all 21 supplied screenshots with readable expansion links', () => {
+test('deck embeds the 19 retained screenshots with readable expansion links', () => {
   const html = readDeck();
   const expectedFiles = [
-    'SS-SETUP-01.png', 'SS-SETUP-02.png', 'SS-SETUP-03.png',
-    'SS-AUTO-01.png', 'SS-AUTO-REPORT.png', 'SS-CMD-PDF.png',
+    'SS-SETUP-02.png', 'SS-AUTO-01.png', 'SS-AUTO-REPORT.png', 'SS-CMD-PDF.png',
     'SS-CMD-TRACKER.png', 'SS-CMD-COVER.png', 'SS-CMD-APPLY-AUTOFILL.png',
     'SS-CMD-APPLY-QUESTIONS.png', 'SS-CMD-OFERTA-COHERE.png',
     'SS-CMD-OFERTA-WAABI.png', 'SS-CMD-OFERTAS.png', 'SS-CMD-DEEP.png',
@@ -131,6 +130,24 @@ test('deck embeds all 21 supplied screenshots with readable expansion links', ()
     assert.ok(fs.statSync(assetPath).size > 10_000, `${file} must be a real screenshot`);
     assert.match(html, new RegExp(`href="assets/screenshots/${file}"[^>]*target="_blank"`));
   }
+});
+
+test('setup uses Codex with ChatGPT sign-in and removes OpenCode setup screenshots', () => {
+  const html = readDeck();
+  const setupSlides = [10, 13].map((slide) => {
+    const section = html.match(new RegExp(`<section\\b[^>]*data-slide="${slide}"[\\s\\S]*?<\\/section>`));
+    assert.ok(section, `slide ${slide} must exist`);
+    return section[0];
+  }).join('\n');
+
+  assert.match(setupSlides, /npm install -g @openai\/codex/);
+  assert.match(setupSlides, /codex --version/);
+  assert.match(setupSlides, /Sign in with ChatGPT/);
+  assert.match(setupSlides, /codex login status/);
+  assert.doesNotMatch(setupSlides, /opencode|OpenRouter/i);
+  assert.match(setupSlides, /No API key is needed/);
+  assert.equal(fs.existsSync(path.join(root, 'assets', 'screenshots', 'SS-SETUP-01.png')), false);
+  assert.equal(fs.existsSync(path.join(root, 'assets', 'screenshots', 'SS-SETUP-03.png')), false);
 });
 
 test('every included command slide contains its exact follow-along prompt', () => {
@@ -166,8 +183,8 @@ test('follow-along prompts identify where to paste them without requiring OpenCo
   const html = readDeck();
   const runtime = loadRuntime(html);
   assert.equal(runtime.prompts.length, 16);
-  runtime.prompts.forEach((prompt) => assert.equal(prompt['aria-label'], 'Prompt to paste into OpenCode, Codex, or Claude Code'));
-  assert.match(html, /OpenCode is used for the live demo, but it is not required/);
+  runtime.prompts.forEach((prompt) => assert.equal(prompt['aria-label'], 'Prompt to paste into Codex, OpenCode, or Claude Code'));
+  assert.match(html, /This workshop uses Codex/);
 });
 
 test('embedded runtime navigates within boundaries and updates progress', () => {
@@ -177,10 +194,10 @@ test('embedded runtime navigates within boundaries and updates progress', () => 
   assert.equal(runtime.api.current(), 0);
   runtime.api.next();
   assert.equal(runtime.api.current(), 1);
-  runtime.api.goTo(31);
+  runtime.api.goTo(32);
   runtime.api.next();
-  assert.equal(runtime.api.current(), 31);
-  assert.equal(runtime.counter.textContent, '32 / 32');
+  assert.equal(runtime.api.current(), 32);
+  assert.equal(runtime.counter.textContent, '33 / 33');
   assert.equal(runtime.progress.style.width, '100%');
 });
 
@@ -232,7 +249,7 @@ test('screenshot viewer switches the large active image and selected tab togethe
 
 test('reported presentation slides use large screenshot viewers instead of thumbnail galleries', () => {
   const html = readDeck();
-  const affected = [11, 12, 16, 19, 20, 21, 22, 23, 24, 25, 26];
+  const affected = [12, 17, 20, 21, 22, 23, 24, 25, 26, 27];
   for (const slide of affected) {
     const section = html.match(new RegExp(`<section\\b[^>]*data-slide="${slide}"[\\s\\S]*?<\\/section>`));
     assert.ok(section, `slide ${slide} must exist`);
@@ -250,7 +267,7 @@ test('deck is offline-safe and exposes visible control help', () => {
 
 test('final slide opens the complete command demo video in a new tab', () => {
   const html = readDeck();
-  const finalSlide = html.match(/<section\b[^>]*data-slide="32"[\s\S]*?<\/section>/);
+  const finalSlide = html.match(/<section\b[^>]*data-slide="33"[\s\S]*?<\/section>/);
   assert.ok(finalSlide, 'final slide must exist');
   assert.match(
     finalSlide[0],

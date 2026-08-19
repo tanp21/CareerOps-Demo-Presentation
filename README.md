@@ -1,6 +1,6 @@
-# Career-Ops for Beginners — HTML Slide Deck
+# Career-Ops Demo Presentation — HTML Slide Deck
 
-A 60-minute workshop deck for high-school seniors who have never used a terminal.
+A 60-minute workshop deck for high-school seniors who have never used a terminal. The guided setup uses Codex CLI with browser-based ChatGPT sign-in; the command prompts also work in OpenCode or Claude Code.
 
 ## Open the slides
 
@@ -42,7 +42,7 @@ The complete file mapping is in `assets/screenshots/README.md`.
 
 - Keep the Andrew Pham Markdown and PDF handouts available for onboarding.
 - Save all three job descriptions as text in case a live posting expires.
-- Rehearse setup and the `auto-pipeline` prompt on the presentation computer.
+- Rehearse the Codex sign-in flow and the `auto-pipeline` prompt on the presentation computer.
 - Never store a real API key, CV, or output containing personal data in this slide repository.
 - Speaker notes total exactly 60 minutes.
 
