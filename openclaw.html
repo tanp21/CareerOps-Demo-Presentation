@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="OpenClaw for dummies — build a 24/7 AI assistant, step by step">
+<title>OpenClaw Workshop</title>
+<style>
+:root{--bg:#07110f;--panel:#10211c;--ink:#effbf7;--muted:#9ab7ad;--mint:#54f2b1;--cyan:#67d9ff;--amber:#ffc857;--red:#ff7b7b;--line:#29483e;--win:#61a8ff;--mac:#c49aff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink)}body{background:radial-gradient(circle at 85% 8%,#123a2f 0,transparent 30%),radial-gradient(circle at 5% 95%,#102c43 0,transparent 34%),var(--bg)}
+.deck{height:100%;position:relative}.slide{position:absolute;inset:0;display:none;padding:5vh 6vw 8vh;overflow:auto}.slide.is-active{display:flex;flex-direction:column;justify-content:center;animation:enter .25s ease-out}@keyframes enter{from{opacity:.2;transform:translateY(12px)}to{opacity:1;transform:none}}
+.slide-no{position:absolute;top:28px;right:42px;color:#78958b;font:700 14px ui-monospace,monospace}.eyebrow{color:var(--mint);font:700 clamp(13px,1.1vw,18px) ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;margin:0 0 14px}.title{font-size:clamp(44px,6vw,92px);line-height:.98;letter-spacing:-.055em;max-width:1150px;margin:0}.title em,.accent{color:var(--mint);font-style:normal}.cyan{color:var(--cyan)}.amber{color:var(--amber)}.subtitle{font-size:clamp(21px,2.1vw,34px);line-height:1.35;color:var(--muted);max-width:1050px;margin:24px 0}.h2{font-size:clamp(38px,4.4vw,68px);letter-spacing:-.045em;line-height:1.03;margin:0 0 26px}.h3{font-size:clamp(23px,2.2vw,36px);margin:0 0 10px}
+.hero-title{max-width:1500px;font-size:clamp(58px,7vw,112px);line-height:1.02}.hero-pills{display:flex;flex-wrap:wrap;gap:16px;margin-top:38px}.hero-pills .pill{padding:11px 18px;font-size:clamp(13px,1vw,17px)}
+.grid{display:grid;gap:20px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:linear-gradient(145deg,#142921e8,#0b1815e8);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 18px 48px #0004}.card p,.card li{font-size:clamp(17px,1.45vw,24px);line-height:1.4;color:#c9ddd5}.card p{margin:8px 0}.card ul{margin:10px 0;padding-left:24px}.card strong{color:var(--mint)}
+.number{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:13px;background:#173c31;color:var(--mint);font:800 21px ui-monospace,monospace;margin-bottom:15px}.pill{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:#cbe0d8;background:#0b1815;font:700 13px ui-monospace,monospace}.pill.ok{border-color:#2c735a;color:var(--mint)}.pill.warn{border-color:#7d6426;color:var(--amber)}
+.terminal{background:#050b0a;border:1px solid #29453d;border-radius:21px;overflow:hidden;box-shadow:0 28px 80px #0008;margin-top:20px}.terminal__bar{padding:10px 15px;background:#12201d;color:#89a79d;font:700 13px ui-monospace,monospace;display:flex;gap:7px}.dot{width:11px;height:11px;border-radius:50%;background:#ff6b6b}.dot:nth-child(2){background:#ffd166}.dot:nth-child(3){background:#5dde91}.terminal pre,.code{margin:0;padding:20px 23px;white-space:pre-wrap;overflow-wrap:anywhere;color:#dff9ee;font:500 clamp(15px,1.25vw,21px)/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}.prompt{color:#7ad7b4}.comment{color:#718b82}.output{color:var(--cyan)}
+.flow{display:flex;align-items:stretch;gap:12px}.flow__node{flex:1;border:1px solid var(--line);background:#10221d;border-radius:21px;padding:22px;text-align:center}.flow__node b{display:block;font-size:clamp(19px,1.8vw,29px);margin-bottom:8px}.flow__node span{color:var(--muted);font-size:clamp(15px,1.2vw,20px)}.arrow{display:grid;place-items:center;color:var(--mint);font-size:32px}
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:20px}.lane{border-radius:22px;padding:22px;border:1px solid var(--line);background:#0d1b18}.lane.win{border-top:5px solid var(--win)}.lane.mac{border-top:5px solid var(--mac)}.lane h3{margin:0 0 12px;font-size:27px}.lane p{font-size:20px;line-height:1.4;color:#c9ddd5}.lane code{display:block;background:#050b0a;padding:14px;border-radius:12px;font:500 18px ui-monospace,monospace}
+.screenshot{position:relative;text-align:center;margin:18px 0}.screenshot img{display:inline-block;max-width:100%;max-height:44vh;width:auto;height:auto;border-radius:18px;border:1px solid var(--line);background:#07110f;opacity:0;transition:opacity .15s}.screenshot.is-ready img{opacity:1}.screenshot__fallback{text-align:center;padding:28px;max-width:660px;margin:0 auto}.screenshot__id{font:800 19px ui-monospace,monospace;color:var(--mint)}.screenshot__desc{font-size:19px;line-height:1.4;color:var(--muted);margin-top:7px}.screenshot.is-ready .screenshot__fallback{display:none}
+.shot-panel img{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:contain;border-radius:0;border:0}
+.grid.two .screenshot img{max-height:36vh}
+.single-shot-layout .screenshot:not(.shot-panel){margin:0}
+.shot-link{display:inline-block;z-index:2}.shot-link:focus-visible{outline:4px solid var(--cyan);outline-offset:-5px}.shot-panel .shot-link{position:absolute;inset:0;display:block}.shot-gallery{display:grid;grid-template-columns:repeat(var(--shots,2),minmax(0,1fr));gap:12px;margin:14px 0}.shot-gallery .screenshot{min-height:190px;margin:0}.shot-gallery .screenshot:after{content:"Click to enlarge";position:absolute;z-index:3;right:8px;bottom:8px;padding:5px 8px;border-radius:999px;background:#07110fda;color:#cbe0d8;font:700 10px ui-monospace,monospace;pointer-events:none}.shot-gallery .screenshot:not(.is-ready):after{display:none}
+.shot-viewer{margin:12px 0}.shot-tabs{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}.shot-tab{border:1px solid var(--line);border-radius:999px;padding:8px 14px;background:#0b1815;color:var(--muted);font:800 12px ui-monospace,monospace;cursor:pointer}.shot-tab.is-active{border-color:var(--mint);background:#173c31;color:var(--mint)}.shot-stage{height:min(51vh,550px)}.shot-viewer.compact .shot-stage{height:min(39vh,420px)}.shot-panel{display:none!important;height:100%;min-height:0!important;margin:0!important}.shot-panel.is-active{display:grid!important}.shot-panel:after{content:"Click to enlarge";position:absolute;z-index:3;right:10px;bottom:10px;padding:6px 9px;border-radius:999px;background:#07110fda;color:#cbe0d8;font:800 11px ui-monospace,monospace;pointer-events:none}.single-shot-layout{display:grid;grid-template-columns:minmax(360px,.72fr) minmax(0,1.28fr);gap:20px;align-items:stretch}.single-shot-layout .shot-viewer{margin:0}.single-shot-layout .shot-stage{height:min(58vh,620px)}
+.follow-prompt{margin:10px 0 0;padding:10px 13px;border:1px solid #31594d;border-left:4px solid var(--mint);border-radius:10px;background:#050b0a;color:#dff9ee;white-space:pre-wrap;overflow-wrap:anywhere;font:600 clamp(11px,.86vw,14px)/1.32 ui-monospace,SFMono-Regular,Consolas,monospace}.follow-prompt:before{content:"SEND THIS MESSAGE TO YOUR OPENCLAW BOT";display:block;margin-bottom:7px;color:var(--cyan);font-size:10px;font-weight:900;letter-spacing:.08em}.prompt-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}.command-slide{justify-content:flex-start!important;padding-top:3vh;padding-bottom:8vh}.command-slide .h2{margin-bottom:15px}.command-slide .card{padding:18px}.command-slide .command-name{margin:4px 0 10px}.command-slide .card p,.command-slide .card li{font-size:clamp(14px,1.1vw,18px)}
+.command-card{display:grid;grid-template-columns:.85fr 1.15fr;gap:20px}.command-name{font:800 clamp(30px,3.8vw,58px) ui-monospace,monospace;color:var(--mint);margin:10px 0 18px}.io{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.io div{border:1px solid var(--line);border-radius:14px;padding:13px}.io span{display:block;color:var(--muted);font:700 11px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.12em}.io b{display:block;margin-top:5px;font-size:17px}
+.warning{border-left:5px solid var(--amber);background:#2a2413;padding:16px 19px;border-radius:0 14px 14px 0;color:#ffe8aa;font-size:18px;line-height:1.45}.warning.success{border-left-color:var(--mint);background:#10271f;color:#caffe9}.warning.danger{border-left-color:var(--red);background:#2a1717;color:#ffd1d1}
+.matrix{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#0b1714}.matrix th,.matrix td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--line);font-size:clamp(15px,1.15vw,20px)}.matrix th{background:#142720;color:var(--mint)}.matrix tr:last-child td{border-bottom:0}
+.notes{display:none}.notes-panel{position:fixed;z-index:30;right:18px;bottom:62px;width:min(520px,44vw);max-height:52vh;overflow:auto;padding:20px;background:#050b0af2;border:1px solid #4c7065;border-radius:18px;box-shadow:0 28px 80px #0008;font-size:17px;line-height:1.5;transform:translateY(130%);transition:.2s}.notes-panel.is-open{transform:none}.notes-panel:before{content:"SPEAKER NOTES";display:block;color:var(--mint);font:800 12px ui-monospace,monospace;letter-spacing:.12em;margin-bottom:9px}
+.controls{position:fixed;z-index:20;left:22px;right:22px;bottom:14px;display:flex;justify-content:space-between;color:#8ba69d;font:700 13px ui-monospace,monospace;pointer-events:none}.controls__help,.slide-counter{background:#07110fca;border:1px solid #203d34;border-radius:999px;padding:7px 12px}.progress{position:fixed;z-index:25;left:0;right:0;bottom:0;height:5px;background:#13241f}.progress__bar{height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--cyan))}
+.overview-open{overflow:auto}.overview-open .deck{height:auto;padding:18px}.overview-open .slide{display:flex;position:relative;inset:auto;width:calc(33.333% - 24px);height:31vh;min-height:230px;float:left;margin:12px;padding:26px;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:#0a1512}.overview-open .slide .title,.overview-open .slide .h2{font-size:24px}.overview-open .slide .subtitle,.overview-open .slide p,.overview-open .slide li{font-size:12px}.overview-open .controls,.overview-open .progress,.overview-open .notes-panel{display:none}
+.source-list{font-size:clamp(17px,1.3vw,21px);line-height:1.65}.source-list a{color:var(--cyan);text-decoration:none}.micro{font-size:14px;color:var(--muted)}code{font-family:ui-monospace,monospace}
+.video-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:20px 0 0;padding:18px 22px;border:1px solid #397c68;border-left:6px solid var(--mint);border-radius:16px;background:linear-gradient(90deg,#143429,#10241f);color:var(--ink);text-decoration:none;box-shadow:0 16px 40px #0004}.video-cta:hover,.video-cta:focus-visible{border-color:var(--cyan);background:#15392f;outline:none}.video-cta__label{font-size:clamp(19px,1.7vw,28px);font-weight:800}.video-cta__url{flex:none;color:var(--cyan);font:700 clamp(13px,1vw,17px) ui-monospace,monospace}.video-cta__arrow{color:var(--mint);font-size:28px}
+.timequote{border-left:5px solid var(--cyan);background:#0d2430;padding:16px 19px;border-radius:0 14px 14px 0;color:#dff4ff;font-size:18px;line-height:1.5}.timequote a{color:var(--cyan);font-weight:800;text-decoration:none}
+@media(max-width:900px){.slide{padding:48px 26px 78px}.two,.three,.four,.lanes,.command-card,.prompt-pair,.single-shot-layout{grid-template-columns:1fr}.shot-gallery{grid-template-columns:1fr}.shot-stage,.shot-viewer.compact .shot-stage,.single-shot-layout .shot-stage{height:44vh}.flow{flex-direction:column}.arrow{transform:rotate(90deg)}.overview-open .slide{width:calc(50% - 24px)}.controls__help{display:none}.notes-panel{width:calc(100vw - 36px)}}
+@media print{html,body{overflow:visible;background:#fff}.slide{display:flex!important;position:relative;page-break-after:always;width:13.333in;height:7.5in;padding:.55in;background:#07110f;-webkit-print-color-adjust:exact;print-color-adjust:exact}.controls,.progress,.notes-panel{display:none!important}}
+</style>
+</head>
+<body>
+<main class="deck" aria-live="polite">
+
+<section class="slide is-active" data-slide="1" aria-label="OpenClaw title slide">
+<span class="slide-no">01</span>
+<h1 class="title hero-title">Give yourself a <em>24/7 AI assistant</em><br>that lives in your chat apps</h1>
+<div class="hero-pills"><span class="pill ok">No coding required</span><span class="pill">Works from your phone</span><span class="pill warn">Watch the build · Try the result</span></div>
+<aside class="notes" data-minutes="0.5">Welcome the class. Today's goal: understand how a self-hosted AI assistant called OpenClaw works, watch one get built, then send it a real message.</aside>
+</section>
+
+<section class="slide" data-slide="2" aria-label="Workshop learning outcomes">
+<span class="slide-no">02</span><p class="eyebrow">The destination</p><h2 class="h2">What will you be able to do by the end?</h2>
+<div class="grid three"><article class="card"><span class="number">1</span><h3 class="h3">See it built</h3><p>Watch a real assistant get deployed on a cloud server, step by step.</p></article><article class="card"><span class="number">2</span><h3 class="h3">Understand how it thinks</h3><p>Tools, Skills, Plugins, Cron, Heartbeat — in plain language, no jargon.</p></article><article class="card"><span class="number">3</span><h3 class="h3">Use it yourself</h3><p>Send a real message to a real bot before class ends.</p></article></div>
+<aside class="notes" data-minutes="1">Set expectations: this is a guided tour, not a race to memorize commands.</aside>
+</section>
+
+<section class="slide" data-slide="3" aria-label="What is OpenClaw">
+<span class="slide-no">03</span><p class="eyebrow">1. The basics</p><h2 class="h2">OpenClaw connects an AI to the apps you already use</h2>
+<div class="grid two"><div class="card"><p><strong>OpenClaw is a self-hosted gateway</strong> — a small program that connects an AI agent to chat apps like Telegram or WhatsApp.</p><ul><li>🚀 Runs on your own server, your rules</li><li>🔗 One gateway can serve 20+ chat apps at once</li><li>🤖 Remembers you between conversations</li><li>📜 Free and open source (MIT license)</li></ul></div><div class="card"><h3 class="h3">Chat apps OpenClaw can plug into</h3><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+<span class="pill">WhatsApp</span><span class="pill">Telegram</span><span class="pill">Slack</span><span class="pill">Discord</span><span class="pill">Signal</span><span class="pill">iMessage</span><span class="pill">Matrix</span><span class="pill">Zalo</span><span class="pill">WebChat</span><span class="pill">Google Chat</span><span class="pill">IRC</span><span class="pill">LINE</span><span class="pill">QQ</span><span class="pill">WeChat</span><span class="pill">+ more</span>
+</div></div></div>
+<div class="warning success" style="margin-top:20px">"The gateway is just the control plane — <strong>the product is the assistant.</strong>"</div>
+<aside class="notes" data-minutes="1.5">Emphasize: OpenClaw itself is plumbing. What students actually experience is a friendly assistant that happens to live inside apps they already have installed.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="4" aria-label="OpenClaw architecture">
+<span class="slide-no">04</span><p class="eyebrow">2. How it fits together</p><h2 class="h2">One gateway process bridges messaging and AI</h2>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/pdf-original/architecture-diagram.png" target="_blank" rel="noopener" aria-label="Enlarge architecture diagram"><img data-shot="ARCH-01" src="assets/screenshots/openclaw/pdf-original/architecture-diagram.png" alt="Diagram: Chat Apps and Plugins connect to the Gateway, which connects to the OpenClaw Agent, CLI, and Web Control UI. The Agent connects to an AI Model Provider, a Workspace of memory files, and Tools. The Workspace connects to TaskFlow, Cron, and Heartbeat." onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<p class="subtitle" style="margin-top:10px">Today the "AI Model Provider" box will be <strong class="accent">Amazon Bedrock</strong> — one of many providers OpenClaw can plug into.</p>
+<aside class="notes" data-minutes="1.5">Walk left to right: messages come in through chat apps, the gateway routes them to the agent, the agent uses a model + its memory files + tools to respond.</aside>
+</section>
+
+<section class="slide" data-slide="5" aria-label="Cost and safety reality check">
+<span class="slide-no">05</span><p class="eyebrow">Before we touch anything</p><h2 class="h2">💳 A quick, honest word about cost</h2>
+<div class="grid two"><article class="card"><h3 class="h3">Server (Amazon Lightsail)</h3><p>The plan recommended for OpenClaw is <strong>$24/month</strong>, billed by the hour.</p><p>AWS's Lightsail free-trial offers only ever cover the small starter plans (a few dollars a month) — <strong>never</strong> the 4 GB plan OpenClaw needs. Offers change, so check AWS's current terms rather than assuming a fixed amount.</p></article><article class="card"><h3 class="h3">AI brain (Amazon Bedrock)</h3><p>There is <strong>no free tier</strong>. Every message is billed by the token from the very first chat.</p><p>Usually a small fraction of a cent per message — but it's real money on a real card, not a sandbox.</p></article></div>
+<div class="warning" style="margin-top:18px">That means today's build needs a credit card and an AWS account. So for the <strong>build steps</strong>, you'll watch on the big screen — no card required. Later, you'll send a <strong>real message</strong> to the bot we build, for free.</div>
+<aside class="notes" data-minutes="1.5">Be upfront and matter-of-fact. This is not a scare tactic — it's why the rest of the setup is instructor-led rather than hands-on for every student.</aside>
+</section>
+
+<section class="slide" data-slide="6" aria-label="Setup step 1: AWS account and Lightsail console">
+<span class="slide-no">06</span><p class="eyebrow">Watch · Setup 1/10</p><h2 class="h2">Sign in to AWS and open the Lightsail console</h2>
+<div class="grid two"><article class="card"><span class="number">1</span><p>Go to <strong>lightsail.aws.amazon.com</strong></p></article><article class="card"><span class="number">2</span><p>Sign in, or create a free AWS account — creating the account itself costs nothing.</p></article></div>
+<div class="timequote" style="margin-top:16px">In the video, the presenter mentions getting about $100 in trial credit on sign-up. Promotional offers change over time — always check AWS's current Free Tier page rather than assuming a fixed amount. <a href="https://youtu.be/rGu9F8N6Cwg?t=430" target="_blank" rel="noopener">Watch this step ↗ 7:10</a></div>
+<aside class="notes" data-minutes="1.5">This part is instructor-led. Narrate the sign-in while it happens on the shared screen.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="7" aria-label="Setup step 2: create the OpenClaw instance">
+<span class="slide-no">07</span><p class="eyebrow">Watch · Setup 2/10</p><h2 class="h2">Create instance → choose the OpenClaw blueprint</h2>
+<div class="grid three" style="margin-bottom:4px"><article class="card"><span class="number">1</span><p>Instances section → <strong>Create instance</strong></p></article><article class="card"><span class="number">2</span><p>Platform: <strong>Linux/Unix</strong></p></article><article class="card"><span class="number">3</span><p>Blueprint: <strong>OpenClaw</strong></p></article></div>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/aws-docs/blueprint_selection.png" target="_blank" rel="noopener" aria-label="Enlarge blueprint selection screenshot"><img data-shot="AWS-01" src="assets/screenshots/openclaw/aws-docs/blueprint_selection.png" alt="AWS Lightsail blueprint selection screen with OpenClaw selected" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<p class="micro">Screenshot: AWS Lightsail documentation · <a href="https://youtu.be/rGu9F8N6Cwg?t=519" target="_blank" rel="noopener" style="color:var(--cyan)">watch this step ↗ 8:39</a></p>
+<aside class="notes" data-minutes="1.5">AWS pre-built this blueprint — OpenClaw and its dependencies are already installed on the image.</aside>
+</section>
+
+<section class="slide" data-slide="8" aria-label="Setup step 3: choose the instance plan">
+<span class="slide-no">08</span><p class="eyebrow">Watch · Setup 3/10</p><h2 class="h2">Pick the 4 GB plan, name it, create it</h2>
+<div class="grid four"><div class="card"><strong>4 GB</strong><p>Memory</p></div><div class="card"><strong>2</strong><p>vCPUs</p></div><div class="card"><strong>80 GB</strong><p>SSD disk</p></div><div class="card"><strong>$24</strong><p>per month</p></div></div>
+<div class="warning" style="margin-top:16px">AWS recommends the 4 GB plan "for optimal performance." Give the instance any name, then click <strong>Create instance</strong>. It takes about a minute to go from <em>Starting</em> to <em>Running</em>.</div>
+<p class="micro" style="margin-top:10px"><a href="https://youtu.be/rGu9F8N6Cwg?t=598" target="_blank" rel="noopener" style="color:var(--cyan)">Watch this step ↗ 9:58</a></p>
+<aside class="notes" data-minutes="1.5">While it boots, remind students this is the only paid part of the whole workshop.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="9" aria-label="Setup step 4: click Connect using SSH">
+<span class="slide-no">09</span><p class="eyebrow">Watch · Setup 4/10</p><h2 class="h2">Click "Connect using SSH"</h2>
+<div class="warning" style="margin-bottom:4px"><strong>"SSH" just means "a safe way to type commands into your server."</strong> Clicking this button doesn't install anything — it opens a real, working terminal as a brand-new tab right inside Chrome.</div>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/video/click-connect-using-ssh.png" target="_blank" rel="noopener"><img data-shot="VID-01" src="assets/screenshots/openclaw/video/click-connect-using-ssh.png" alt="Lightsail Getting Started tab with the Pair browser and configure OpenClaw card highlighted, showing the Connect using SSH button to click" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<p class="micro">On the instance's <strong>Getting started</strong> tab, find the card boxed in red, then click <strong>Connect using SSH</strong>. Screenshot captured from the setup video at 14:18.</p>
+<aside class="notes" data-minutes="1">The red box marks exactly where to click. This is the only click needed to get a working terminal — no software to install.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="10" aria-label="Setup step 5: the SSH terminal opens">
+<span class="slide-no">10</span><p class="eyebrow">Watch · Setup 5/10</p><h2 class="h2">A black terminal opens in a new tab</h2>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/aws-docs/motd_welcome_message.png" target="_blank" rel="noopener"><img data-shot="AWS-M1" src="assets/screenshots/openclaw/aws-docs/motd_welcome_message.png" alt="The new browser tab: a black terminal window opens showing the Lightsail OpenClaw welcome message" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<p class="subtitle" style="margin-top:10px">This is normal — you'll see a welcome message like this. Nothing to type yet, just read on.</p>
+<aside class="notes" data-minutes="1">Reassure students this black screen isn't scary — it's just text output confirming the terminal connected.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="11" aria-label="Setup step 6: copy the Dashboard URL">
+<span class="slide-no">11</span><p class="eyebrow">Watch · Setup 6/10</p><h2 class="h2">Copy the Dashboard URL, open it in a new tab</h2>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/aws-docs/device_pairing.png" target="_blank" rel="noopener"><img data-shot="AWS-M2" src="assets/screenshots/openclaw/aws-docs/device_pairing.png" alt="In the SSH terminal, locate the Dashboard URL shown in the welcome message. Copy this URL and open it in a new browser tab, using sample data" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<p class="subtitle" style="margin-top:10px">The terminal prints a <strong>Dashboard URL</strong>. Copy it and paste it into a brand-new browser tab — that tab becomes your OpenClaw dashboard.</p>
+<aside class="notes" data-minutes="1.5">Two tabs are now open side by side: the SSH terminal, and the new dashboard tab. Both stay open for the next steps.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="12" aria-label="Setup step 7: paste the Access Token and connect">
+<span class="slide-no">12</span><p class="eyebrow">Watch · Setup 7/10</p><h2 class="h2">Paste the Access Token, click Connect</h2>
+<div class="single-shot-layout"><article class="card"><p>In the dashboard tab, find the <strong>Gateway Token</strong> field.</p><p>Go back to the terminal tab, copy the <strong>Access Token</strong> shown there.</p><p>Paste it into that field, then click <strong>Connect</strong>.</p></article><figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/aws-docs/gateway_access.png" target="_blank" rel="noopener"><img data-shot="AWS-03" src="assets/screenshots/openclaw/aws-docs/gateway_access.png" alt="In the OpenClaw dashboard that opened, find the Gateway Token field. Back in the SSH terminal, copy the Access Token shown there, paste it into this field, then click Connect, using sample data" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure></div>
+<aside class="notes" data-minutes="1.5">This is the step where the token could show on screen — this is exactly why the safety callout comes right after this section.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="13" aria-label="Setup step 8: approve in the terminal">
+<span class="slide-no">13</span><p class="eyebrow">Watch · Setup 8/10</p><h2 class="h2">Back in the terminal: type y, y, then a</h2>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/aws-docs/cli_approval.png" target="_blank" rel="noopener"><img data-shot="AWS-04" src="assets/screenshots/openclaw/aws-docs/cli_approval.png" alt="Back in the SSH terminal: press y to approve the OpenClaw CLI, press y again to continue with device pairing, then press a to approve the pairing request" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<div class="grid three" style="margin-top:10px"><div class="card"><strong>y</strong><p>Approve the OpenClaw CLI</p></div><div class="card"><strong>y</strong><p>Continue with device pairing</p></div><div class="card"><strong>a</strong><p>Approve the pairing request</p></div></div>
+<aside class="notes" data-minutes="1.5">Three quick prompts in a row, all answered from the terminal tab, not the dashboard tab.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="14" aria-label="Setup step 9: paired successfully">
+<span class="slide-no">14</span><p class="eyebrow">Watch · Setup 9/10</p><h2 class="h2">Status: OK — you're paired</h2>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/aws-docs/gateway_success.png" target="_blank" rel="noopener"><img data-shot="AWS-05" src="assets/screenshots/openclaw/aws-docs/gateway_success.png" alt="Dashboard snapshot showing Status: OK — the browser is successfully paired with the OpenClaw gateway" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<p class="subtitle" style="margin-top:10px">The dashboard now shows <strong>Status: OK</strong>. Your browser can talk to the assistant — one setup step left.</p>
+<p class="micro"><a href="https://youtu.be/rGu9F8N6Cwg?t=1130" target="_blank" rel="noopener" style="color:var(--cyan)">Watch the full pairing in the video ↗ 18:50 — "we are paired"</a></p>
+<aside class="notes" data-minutes="1">Screenshots for this whole pairing sequence: AWS Lightsail documentation, plus one frame captured from the setup video at 14:18.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="15" aria-label="Setup step 5: enable Amazon Bedrock">
+<span class="slide-no">15</span><p class="eyebrow">Watch · Setup 10/10</p><h2 class="h2">Turn on Amazon Bedrock — the AI brain</h2>
+<p>Your instance is configured to use Bedrock, but it needs permission first.</p>
+<div class="grid three" style="margin-top:10px"><div class="card"><span class="number">1</span><p>Getting started tab → <strong>Copy the script</strong></p></div><div class="card"><span class="number">2</span><p>Click <strong>Launch CloudShell</strong>, paste it, press Enter</p></div><div class="card"><span class="number">3</span><p>Wait for <strong>Done</strong> in the output</p></div></div>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/aws-docs/bedrock_script.png" target="_blank" rel="noopener"><img data-shot="AWS-06" src="assets/screenshots/openclaw/aws-docs/bedrock_script.png" alt="Copying the Bedrock permissions script from the Getting Started tab, using test data" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<div class="warning" style="margin-top:14px">This script creates an IAM role that lets <em>only this instance</em> call Bedrock — AWS is being deliberately strict about permissions.</div>
+<div class="warning danger" style="margin-top:10px">One extra one-time step: the default model is Anthropic Claude. The <strong>first</strong> time any Anthropic model is used in an AWS account, Amazon Bedrock requires a short <strong>First Time Use (FTU) form</strong> in the Bedrock console before it will respond.</div>
+<p class="micro"><a href="https://youtu.be/rGu9F8N6Cwg?t=1411" target="_blank" rel="noopener" style="color:var(--cyan)">Watch this step ↗ 23:31</a></p>
+<aside class="notes" data-minutes="2">Screenshot: official AWS documentation. Without the IAM script the Chat tab has no model to talk to; without the FTU form, an Anthropic model specifically will refuse to respond even with permissions granted.</aside>
+</section>
+
+<section class="slide" data-slide="16" aria-label="Safety callout: never expose your token">
+<span class="slide-no">16</span><p class="eyebrow">⚠️ A real lesson from the video</p><h2 class="h2">Never let your token show on screen</h2>
+<div class="warning danger">Even the person recording this official walkthrough almost leaked his own access token live on stream: <em>"Oh no... we might be in trouble."</em> He had to stop, hide his screen, and be more careful for the rest of the pairing step.</div>
+<p class="subtitle" style="margin-top:14px">Your Gateway Token and messaging bot tokens are like a house key — anyone who has them can control your assistant. Never screen-share, screenshot, or paste them in a chat.</p>
+<p class="micro"><a href="https://youtu.be/rGu9F8N6Cwg?t=886" target="_blank" rel="noopener" style="color:var(--cyan)">Watch this moment ↗ 14:46</a> (no screenshot shown here, on purpose)</p>
+<aside class="notes" data-minutes="1.5">Use this as a teachable moment: even experienced presenters make this mistake. That's exactly why we're not asking every student to handle a real token today.</aside>
+</section>
+
+<section class="slide" data-slide="17" aria-label="Common mistake: do not change the default model">
+<span class="slide-no">17</span><p class="eyebrow">⚠️ A real mistake from the video</p><h2 class="h2">Leave the default AI model alone</h2>
+<div class="warning">The presenter switched from the default model to a cheaper one to save money — and broke the chat with an error. He had to switch back: <em>"This is not ideal, guys... I made a mistake there. I should have gone with the default model."</em></div>
+<p class="subtitle" style="margin-top:14px">Lesson: the default model that ships with the blueprint is already tested to work. Only change it once everything is working, and change one thing at a time.</p>
+<p class="micro"><a href="https://youtu.be/rGu9F8N6Cwg?t=1147" target="_blank" rel="noopener" style="color:var(--cyan)">Watch this stretch ↗ 19:07 – 27:26</a></p>
+<aside class="notes" data-minutes="1.5">This is also a gentle debugging lesson: change one variable, check the result, and be ready to undo it.</aside>
+</section>
+
+<section class="slide" data-slide="18" aria-label="First chat test">
+<span class="slide-no">18</span><p class="eyebrow">🎉 It's alive</p><h2 class="h2">The first message to your assistant</h2>
+<div class="terminal"><div class="terminal__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i> OpenClaw · Chat</div><pre><span class="prompt">you ›</span> hi
+<span class="output">assistant › Hey, I just came online...</span></pre></div>
+<p class="subtitle" style="margin-top:14px">Once Bedrock is enabled, the Chat tab in the dashboard works immediately — no extra setup.</p>
+<p class="micro">A real reply from the video, not a scripted example.</p>
+<p class="micro"><a href="https://youtu.be/rGu9F8N6Cwg?t=1669" target="_blank" rel="noopener" style="color:var(--cyan)">Watch this moment ↗ 27:49</a></p>
+<aside class="notes" data-minutes="1">A small but real milestone — the instance now has a working brain.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="19" aria-label="Connect Telegram">
+<span class="slide-no">19</span><p class="eyebrow">Now make it mobile</p><h2 class="h2">Connect a Telegram bot to your assistant</h2>
+<div class="terminal"><div class="terminal__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i> SSH · your OpenClaw instance</div><pre><span class="prompt">$</span> openclaw channels add
+<span class="comment"># choose Telegram, then paste the bot token from @BotFather</span>
+
+<span class="comment"># after messaging the bot once, approve pairing:</span>
+<span class="prompt">$</span> openclaw pairing approve telegram <span class="output">[pairing code]</span></pre></div>
+<div class="shot-viewer compact" data-shot-viewer><div class="shot-tabs" role="tablist">
+<button class="shot-tab is-active" data-shot-tab aria-selected="true" onclick="OpenClawDeck.showShot(this.closest('[data-shot-viewer]'),0)">1. @BotFather</button>
+<button class="shot-tab" data-shot-tab aria-selected="false" onclick="OpenClawDeck.showShot(this.closest('[data-shot-viewer]'),1)">2. Add channel</button>
+<button class="shot-tab" data-shot-tab aria-selected="false" onclick="OpenClawDeck.showShot(this.closest('[data-shot-viewer]'),2)">3. Allow list</button>
+<button class="shot-tab" data-shot-tab aria-selected="false" onclick="OpenClawDeck.showShot(this.closest('[data-shot-viewer]'),3)">4. Telegram sends a code</button>
+<button class="shot-tab" data-shot-tab aria-selected="false" onclick="OpenClawDeck.showShot(this.closest('[data-shot-viewer]'),4)">5. Paired!</button>
+</div><div class="shot-stage">
+<figure class="screenshot shot-panel is-active" data-shot-panel><a class="shot-link" href="assets/screenshots/openclaw/aws-docs/botfather.png" target="_blank" rel="noopener"><img data-shot="AWS-07" src="assets/screenshots/openclaw/aws-docs/botfather.png" alt="Creating a bot with @BotFather on Telegram" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<figure class="screenshot shot-panel" data-shot-panel hidden><a class="shot-link" href="assets/screenshots/openclaw/aws-docs/channel_selection.png" target="_blank" rel="noopener"><img data-shot="AWS-08" src="assets/screenshots/openclaw/aws-docs/channel_selection.png" alt="Selecting Telegram from the OpenClaw channel selection menu" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<figure class="screenshot shot-panel" data-shot-panel hidden><a class="shot-link" href="assets/screenshots/openclaw/aws-docs/telegram_allow_from.png" target="_blank" rel="noopener"><img data-shot="AWS-09" src="assets/screenshots/openclaw/aws-docs/telegram_allow_from.png" alt="Adding a Telegram user ID to the allow list in the OpenClaw dashboard" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<figure class="screenshot shot-panel" data-shot-panel hidden><a class="shot-link" href="assets/screenshots/openclaw/aws-docs/telegram_pairing.png" target="_blank" rel="noopener"><img data-shot="AWS-10" src="assets/screenshots/openclaw/aws-docs/telegram_pairing.png" alt="The bot's reply inside Telegram when it doesn't recognize you yet: your Telegram user ID, a pairing code, and the exact command to approve it back in the SSH terminal, using sample data" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<figure class="screenshot shot-panel" data-shot-panel hidden><a class="shot-link" href="assets/screenshots/openclaw/aws-docs/telegram_successful_message.png" target="_blank" rel="noopener"><img data-shot="AWS-11" src="assets/screenshots/openclaw/aws-docs/telegram_successful_message.png" alt="A successful message exchange with OpenClaw over Telegram" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+</div></div>
+<aside class="notes" data-minutes="2.5">Screenshots: official AWS documentation. Same steps work for WhatsApp — scan a QR code from Linked Devices instead of talking to BotFather.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="20" aria-label="Agent workspace">
+<span class="slide-no">20</span><p class="eyebrow">3. What the assistant remembers</p><h2 class="h2">Everything it knows about you lives in plain text files</h2>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/pdf-original/agent-workspace-diagram.png" target="_blank" rel="noopener" aria-label="Enlarge agent workspace diagram"><img data-shot="WORKSPACE-01" src="assets/screenshots/openclaw/pdf-original/agent-workspace-diagram.png" alt="Diagram of the OpenClaw workspace folder: Identity (SOUL.md, IDENTITY.md, USER.md), Operating System (AGENTS.md, BOOT.md, TOOLS.md), and Storage (MEMORY.md, daily memory logs)" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<p class="subtitle" style="margin-top:10px">No database, no hidden state — just markdown files the assistant reads and edits itself. You can open and read every one of them.</p>
+<aside class="notes" data-minutes="2">Compare to a person's notebook: SOUL/IDENTITY/USER = who they are, AGENTS/BOOT/TOOLS = their instructions, MEMORY = their diary.</aside>
+</section>
+
+<section class="slide" data-slide="21" aria-label="Tools vs Skills vs Plugins">
+<span class="slide-no">21</span><p class="eyebrow">4. How it gets new abilities</p><h2 class="h2">Tools vs Skills vs Plugins</h2>
+<table class="matrix"><thead><tr><th>Layer</th><th>What it is</th><th>When to use</th><th>Example</th></tr></thead><tbody>
+<tr><td>🔧 Tool</td><td>A function the agent can call</td><td>It needs to <em>act</em>: read, write, run code, search</td><td><code>read</code>, <code>exec</code>, <code>sessions_spawn</code></td></tr>
+<tr><td>📜 Skill</td><td>An instruction sheet loaded into its prompt</td><td>A repeatable routine, no new code</td><td><code>weather</code>, <code>taskflow</code>, <code>diagram-maker</code></td></tr>
+<tr><td>🧩 Plugin</td><td>Extends the program itself with new code</td><td>It needs a whole new capability: a channel, a provider</td><td><code>@openclaw/deepseek-provider</code></td></tr>
+</tbody></table>
+<div class="warning success" style="margin-top:16px">Think of it like a new employee: a <strong>Tool</strong> is a task they can do, a <strong>Skill</strong> is a printed instruction sheet you hand them, a <strong>Plugin</strong> is teaching them a whole new job.</div>
+<aside class="notes" data-minutes="2">Skills only need a markdown file — the lowest-effort way to extend OpenClaw.</aside>
+</section>
+
+<section class="slide" data-slide="22" aria-label="Cron vs Heartbeat">
+<span class="slide-no">22</span><p class="eyebrow">5. How it stays proactive</p><h2 class="h2">TaskFlow · Cron · Heartbeat</h2>
+<div class="grid three"><article class="card"><h3 class="h3">🔧 TaskFlow</h3><p>Runs multi-step jobs in the background. Remembers where it left off, even after a restart.</p><p class="micro">create → run → wait → resume → finish</p></article><article class="card"><h3 class="h3">⏰ Cron</h3><p>Runs at an exact time, every time — like a phone alarm. "Scrape Twitter every 30 min", "Send a report at 8 AM."</p></article><article class="card"><h3 class="h3">💓 Heartbeat</h3><p>Checks in on its own 2–4×/day against a checklist — like glancing at your phone a few times a day instead of staring at it.</p></article></div>
+<div class="warning" style="margin-top:16px"><strong>Cron</strong> = exact timing. <strong>Heartbeat</strong> = batched checks, lower cost.</div>
+<aside class="notes" data-minutes="2">Heartbeat is cheaper because it bundles several small checks into one AI call instead of many separate ones.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="23" aria-label="Hands-on: message the bot">
+<span class="slide-no">23</span><p class="eyebrow">🎯 Your turn</p><h2 class="h2">Send a real message to the bot on screen</h2>
+<div class="single-shot-layout"><article class="card"><p>Open the Telegram bot we just connected and send exactly this:</p><pre class="follow-prompt">create a file on my home folder called hello-world</pre><p style="margin-top:14px">Watch it reply in seconds — that reply is a real AI agent, running on a real server, acting on a real command. Your bot's exact wording will differ each time; that's expected.</p></article><div class="terminal"><div class="terminal__bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i> Telegram · OpenClaw bot</div><pre><span class="prompt">you ›</span> create a file on my home folder called hello-world
+<span class="output">assistant › (it creates the file and confirms — your own bot's wording will vary)</span></pre></div></div>
+<p class="micro">In the video, this same command worked and created the file. <a href="https://youtu.be/rGu9F8N6Cwg?t=1757" target="_blank" rel="noopener" style="color:var(--cyan)">Watch that demo ↗ 29:17</a></p>
+<aside class="notes" data-minutes="3">This is the payoff moment — every student gets to be the one sending the message, even though the instructor built the server.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="24" aria-label="Use case: Twitter monitoring">
+<span class="slide-no">24</span><p class="eyebrow">6. What people actually build with it</p><h2 class="h2">Use case: Twitter/X monitoring</h2>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/pdf-original/twitter-monitoring-flow.png" target="_blank" rel="noopener" aria-label="Enlarge Twitter monitoring pipeline diagram"><img data-shot="USECASE-01" src="assets/screenshots/openclaw/pdf-original/twitter-monitoring-flow.png" alt="Diagram: every 30 minutes, cron scrapes Twitter/X, a TaskFlow analyzer checks relevance, and relevant content triggers a Telegram notification with a heartbeat check for replies. Verification capabilities: image and screenshot analysis, document and PDF reading, cross-reference with news sources. Pipeline: capture tweet or media, parallel sub-agent analysis, cross-reference sources, alert via Telegram." onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<aside class="notes" data-minutes="2">This combines every concept from the last few slides: Cron for timing, TaskFlow for the multi-step pipeline, Heartbeat for checking replies later.</aside>
+</section>
+
+<section class="slide command-slide" data-slide="25" aria-label="Web search showcase">
+<span class="slide-no">25</span><p class="eyebrow">6. What people actually build with it</p><h2 class="h2">It can browse the web for you</h2>
+<div class="grid two">
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/pdf-original/websearch-chat-reply.png" target="_blank" rel="noopener" aria-label="Enlarge chat reply screenshot"><img data-shot="WEBSEARCH-01" src="assets/screenshots/openclaw/pdf-original/websearch-chat-reply.png" alt="Chat: user asks OpenClaw to find Elon Musk's latest post on X; the assistant replies with a web-search summary" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/pdf-original/websearch-x-post.png" target="_blank" rel="noopener" aria-label="Enlarge the actual X post it found"><img data-shot="WEBSEARCH-02" src="assets/screenshots/openclaw/pdf-original/websearch-x-post.png" alt="The actual pinned X post from Elon Musk that the assistant found and summarized" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+</div>
+<aside class="notes" data-minutes="1.5">Ask students: what's a question they'd want their own assistant to look up for them?</aside>
+</section>
+
+<section class="slide command-slide" data-slide="26" aria-label="Image analysis showcase">
+<span class="slide-no">26</span><p class="eyebrow">6. What people actually build with it</p><h2 class="h2">It can also look at photos</h2>
+<div class="grid two">
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/pdf-original/image-analysis-photo.png" target="_blank" rel="noopener" aria-label="Enlarge the test photo"><img data-shot="IMGANALYSIS-01" src="assets/screenshots/openclaw/pdf-original/image-analysis-photo.png" alt="A photo of a temple complex on a hillside in Vietnam, used to test image analysis" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+<figure class="screenshot"><a class="shot-link" href="assets/screenshots/openclaw/pdf-original/image-analysis-chat-reply.png" target="_blank" rel="noopener" aria-label="Enlarge the assistant's analysis"><img data-shot="IMGANALYSIS-02" src="assets/screenshots/openclaw/pdf-original/image-analysis-chat-reply.png" alt="Chat reply correctly identifying the photo as Ba Chua Xu Temple at Sam Mountain, Chau Doc, Vietnam, with reasoning" onload="OpenClawDeck.hydrateScreenshot(this)" onerror="OpenClawDeck.hydrateScreenshot(this)"></a></figure>
+</div>
+<p class="micro" style="margin-top:8px">The model behind this analysis was called through OpenRouter, a provider similar to Bedrock.</p>
+<aside class="notes" data-minutes="1.5">This is a fun one — the assistant reasoned from visual clues (roof style, signage, cable car) to name the exact temple.</aside>
+</section>
+
+<section class="slide" data-slide="27" aria-label="Why OpenClaw">
+<span class="slide-no">27</span><p class="eyebrow">7. Why bother self-hosting</p><h2 class="h2">Why OpenClaw?</h2>
+<div class="grid two">
+<article class="card">🔒 <strong>Self-Hosted &amp; Private</strong><p>Your data stays on your own server. No third-party cloud access.</p></article>
+<article class="card">⚡ <strong>Pay for what you use</strong><p>A Lightsail instance plus per-token AI cost — no forced subscription.</p></article>
+<article class="card">🔌 <strong>Multi-Channel</strong><p>Telegram, WhatsApp, Slack — one agent, any surface.</p></article>
+<article class="card">🧩 <strong>Extensible</strong><p>Skills, Plugins, TaskFlow — adapt it to almost any use case.</p></article>
+<article class="card">🤖 <strong>Proactive</strong><p>Heartbeat + Cron mean it's always watching — you never have to ask.</p></article>
+<article class="card">📜 <strong>Open Source</strong><p>MIT license. Full control. A growing community of plugins.</p></article>
+</div>
+<aside class="notes" data-minutes="1.5">This is the "so what" slide — why go through all this setup instead of just using a chat app directly.</aside>
+</section>
+
+<section class="slide" data-slide="28" aria-label="Bonus demos">
+<span class="slide-no">28</span><p class="eyebrow">Optional · for the curious</p><h2 class="h2">Two more demos from the full video</h2>
+<div class="grid two">
+<a class="video-cta" href="https://youtu.be/rGu9F8N6Cwg?t=2017" target="_blank" rel="noopener"><span class="video-cta__label">Scraping Reddit for news</span><span class="video-cta__url">↗ 33:37</span></a>
+<a class="video-cta" href="https://youtu.be/rGu9F8N6Cwg?t=3351" target="_blank" rel="noopener"><span class="video-cta__label">Turning a YouTube video into a blog post</span><span class="video-cta__url">↗ 55:51</span></a>
+</div>
+<p class="subtitle" style="margin-top:16px">Not required for this workshop — worth a watch later if you want to see how far this can go.</p>
+<aside class="notes" data-minutes="0.5">Skip live if time is short; mention it exists.</aside>
+</section>
+
+<section class="slide" data-slide="29" aria-label="Summary and next steps">
+<span class="slide-no">29</span><p class="eyebrow">You now have an assistant, not just a chatbot</p><h2 class="h2">Next: let it help you <span class="accent">land a job</span></h2>
+<div class="grid two"><article class="card"><h3 class="h3">What we covered</h3><ul><li>What OpenClaw is and how it's wired together</li><li>Deploying it on AWS Lightsail + Bedrock</li><li>Tools, Skills, Plugins, Cron, Heartbeat</li><li>Sending it a real message yourself</li></ul></article><article class="card"><h3 class="h3">Official sources</h3><div class="source-list"><a href="https://openclaw.ai" target="_blank" rel="noopener">openclaw.ai</a><br><a href="https://docs.openclaw.ai" target="_blank" rel="noopener">docs.openclaw.ai</a><br><a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">github.com/openclaw/openclaw</a><br><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-quick-start-guide-openclaw.html" target="_blank" rel="noopener">AWS Lightsail + OpenClaw guide</a></div></div></div>
+<a class="video-cta" href="https://youtu.be/rGu9F8N6Cwg" target="_blank" rel="noopener" aria-label="Watch the full OpenClaw Lightsail setup video on YouTube in a new tab"><span class="video-cta__label">Watch the full setup video</span><span class="video-cta__url">youtu.be/rGu9F8N6Cwg</span><span class="video-cta__arrow" aria-hidden="true">↗</span></a>
+<aside class="notes" data-minutes="1">Bridge into the Career-Ops half of the workshop: the same kind of AI agent students just watched get built is what will run the job-search workflow next.</aside>
+</section>
+
+</main>
+<aside class="notes-panel" aria-label="Speaker notes" aria-hidden="true"></aside>
+<div class="controls"><div class="controls__help" data-controls-help>←/→ slides · O overview · N notes · F fullscreen</div><div class="slide-counter">1 / 29</div></div>
+<div class="progress" aria-hidden="true"><div class="progress__bar"></div></div>
+<script id="deck-runtime">
+(() => {
+ const slides=Array.from(document.querySelectorAll('.slide'));
+ const progress=document.querySelector('.progress__bar');
+ const counter=document.querySelector('.slide-counter');
+ const notesPanel=document.querySelector('.notes-panel');
+ if(notesPanel)notesPanel.hidden=true;
+ let index=0;
+ function clamp(v){return Math.max(0,Math.min(slides.length-1,Number(v)||0))}
+ function goTo(v){index=clamp(v);slides.forEach((s,i)=>{const a=i===index;s.classList.toggle('is-active',a);s.setAttribute('aria-hidden',String(!a))});if(progress)progress.style.width=(((index+1)/slides.length)*100)+'%';if(counter)counter.textContent=(index+1)+' / '+slides.length;const n=slides[index]&&slides[index].querySelector&&slides[index].querySelector('.notes');if(notesPanel)notesPanel.innerHTML=n?n.innerHTML:'No notes for this slide.';if(window.location)window.location.hash=String(index+1);return index}
+ function next(){return goTo(index+1)} function previous(){return goTo(index-1)}
+ function toggleNotes(){if(!notesPanel)return false;const open=notesPanel.classList.toggle('is-open');notesPanel.hidden=!open;notesPanel.setAttribute('aria-hidden',String(!open));return open}
+ function toggleOverview(){return document.body.classList.toggle('overview-open')}
+ async function toggleFullscreen(){if(!document.fullscreenElement)await document.documentElement.requestFullscreen?.();else await document.exitFullscreen?.()}
+ function hydrateScreenshot(image){const figure=image&&image.closest&&image.closest('.screenshot');if(!figure)return false;const loaded=Boolean(image.complete&&image.naturalWidth>0);figure.classList.toggle('is-ready',loaded);figure.classList.toggle('is-missing',!loaded);return loaded}
+ function showShot(viewer,target){if(!viewer)return false;const panels=Array.from(viewer.querySelectorAll('[data-shot-panel]'));const tabs=Array.from(viewer.querySelectorAll('[data-shot-tab]'));const next=Math.max(0,Math.min(panels.length-1,Number(target)||0));panels.forEach((panel,i)=>{const active=i===next;panel.hidden=!active;panel.classList.toggle('is-active',active)});tabs.forEach((tab,i)=>{const active=i===next;tab.classList.toggle('is-active',active);tab.setAttribute('aria-selected',String(active))});return next}
+ function handleKey(e){if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault?.();next()}if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault?.();previous()}if(e.key==='Home')goTo(0);if(e.key==='End')goTo(slides.length-1);if(e.key.toLowerCase()==='n')toggleNotes();if(e.key.toLowerCase()==='o')toggleOverview();if(e.key.toLowerCase()==='f')toggleFullscreen();if(e.key==='Escape'&&document.body.classList.contains('overview-open'))toggleOverview()}
+ window.OpenClawDeck={goTo,next,previous,current:()=>index,toggleNotes,toggleOverview,toggleFullscreen,hydrateScreenshot,showShot};
+ document.addEventListener('keydown',handleKey);
+ window.addEventListener('hashchange',()=>goTo(Number(window.location.hash.slice(1))-1));
+ slides.forEach((s,i)=>s.addEventListener?.('click',()=>{if(document.body.classList.contains('overview-open')){toggleOverview();goTo(i)}}));
+ document.querySelectorAll('.screenshot img').forEach(hydrateScreenshot);
+ goTo(window.location?.hash?Number(window.location.hash.slice(1))-1:0);
+})();
+</script>
+</body>
+</html>
